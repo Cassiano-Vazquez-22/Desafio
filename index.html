@@ -600,9 +600,63 @@
       ctx.globalAlpha = 1;
 
       // JOGADOR (Lobisomem / Cão Gigante)
+     // JOGADOR (Labrador Bípede em Pixel Art)
       ctx.save();
-      ctx.translate(player.x + player.width/2, player.y + player.height/2);
+      // Move a "câmera" para o centro do jogador para podermos espelhar ao andar para trás
+      ctx.translate(player.x + player.width / 2, player.y + player.height / 2);
       ctx.scale(player.facing, 1);
+      
+      // Braço atacando esticado (com a cor marrom escuro da pata)
+      if (player.punchCooldown > 0.15) {
+        ctx.fillStyle = '#78350f'; 
+        ctx.fillRect(15, -15, 40, 15);
+      }
+
+      // Matriz de Pixel Art: Cada número representa uma cor
+      const labSprite = [
+        "  222111    ", // Cabeça e Orelha Traseira
+        "  2111112   ",
+        "  11131112  ", // Olho (3)
+        "  11111112  ", // Focinho
+        "   111152   ", // Boca com Língua (5) e Nariz (2)
+        "   44444    ", // Coleira (4)
+        "  1111111   ", // Peitoral
+        " 111111111  ", // Corpo
+        " 111111111  ",
+        " 11 1111 11 ", // Braços relaxados
+        " 22 1111 22 ", // Patas (Mãos)
+        "    1111    ", // Barriga
+        "   11  11   ", // Pernas
+        "   11  11   ",
+        "   22  22   "  // Patas (Pés)
+      ];
+
+      // Paleta de Cores do Labrador
+      const colors = {
+        '1': '#b45309', // Marrom Base (Pelo)
+        '2': '#78350f', // Marrom Escuro (Orelhas, Focinho, Patas)
+        '3': '#000000', // Preto (Olho)
+        '4': '#ef4444', // Vermelho (Coleira)
+        '5': '#f43f5e'  // Rosa (Língua de fora)
+      };
+
+      const pixelSize = 5; // Cada caractere do array vai ter 5x5 pixels de tamanho na tela
+      
+      // Ponto de partida para desenhar (centraliza a matriz de 12x15 na área do jogador)
+      const startX = -30;
+      const startY = -37;
+
+      // Loop de renderização que lê a matriz e desenha os quadradinhos
+      for (let row = 0; row < labSprite.length; row++) {
+        for (let col = 0; col < labSprite[row].length; col++) {
+          const char = labSprite[row][col];
+          if (colors[char]) { // Se for um número mapeado na paleta, desenha
+            ctx.fillStyle = colors[char];
+            ctx.fillRect(startX + (col * pixelSize), startY + (row * pixelSize), pixelSize, pixelSize);
+          }
+        }
+      }
+      ctx.restore();
       
       // Braço atacando
       if (player.punchCooldown > 0.15) {
