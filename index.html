@@ -2,149 +2,357 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TechStart - Avaliação de Desempenho</title>
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>TechStart: Space Defender</title>
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #0f172a;
-      margin: 0;
-      color: #f8fafc;
-    }
-
-    .container {
-      background: #1e293b;
-      padding: 32px;
-      border-radius: 16px;
-      width: 100%;
-      max-width: 400px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-      border: 1px solid #334155;
-    }
-
-    h2 {
-      margin-top: 0;
-      text-align: center;
-      font-size: 1.4rem;
-      color: #38bdf8;
-    }
-
-    .campo {
-      margin-bottom: 12px;
-    }
-
-    label {
-      display: block;
-      font-size: 0.85rem;
-      color: #94a3b8;
-      margin-bottom: 4px;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #475569;
-      background: #0f172a;
-      color: #fff;
-      font-size: 1rem;
+    * {
       box-sizing: border-box;
-      outline: none;
+      margin: 0;
+      padding: 0;
+      user-select: none;
     }
 
-    input:focus {
-      border-color: #38bdf8;
+    body {
+      background: #020617;
+      color: #f8fafc;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    #game-container {
+      position: relative;
+      border: 2px solid #38bdf8;
+      border-radius: 12px;
+      box-shadow: 0 0 30px rgba(56, 189, 248, 0.3);
+      overflow: hidden;
+      background: #000;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    .ui-overlay {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.1rem;
+      font-weight: bold;
+      pointer-events: none;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    }
+
+    #score-display { color: #38bdf8; }
+    #lives-display { color: #f43f5e; }
+
+    #screen-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.85);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      text-align: center;
+      padding: 20px;
+    }
+
+    #screen-overlay h1 {
+      font-size: 2rem;
+      color: #38bdf8;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    #screen-overlay p {
+      font-size: 0.95rem;
+      color: #94a3b8;
+      max-width: 320px;
+      line-height: 1.5;
     }
 
     button {
-      width: 100%;
-      margin-top: 14px;
-      padding: 12px;
+      padding: 12px 32px;
       background: #0284c7;
-      color: #ffffff;
-      font-weight: 600;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: bold;
       border: none;
       border-radius: 8px;
-      font-size: 1rem;
       cursor: pointer;
-      transition: background 0.2s;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
+      transition: transform 0.1s, background 0.2s;
     }
 
-    button:hover {
-      background: #0369a1;
-    }
+    button:hover { background: #0369a1; }
+    button:active { transform: scale(0.96); }
 
-    .resultado {
-      margin-top: 20px;
-      padding: 14px;
-      background: #0f172a;
-      border-radius: 8px;
-      border: 1px solid #334155;
+    .touch-controls {
       display: none;
+      margin-top: 14px;
+      gap: 12px;
     }
 
-    .resultado p {
-      margin: 6px 0;
-      font-size: 0.95rem;
+    @media (hover: none) and (pointer: coarse) {
+      .touch-controls { display: flex; }
+    }
+
+    .touch-btn {
+      width: 70px;
+      height: 50px;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #1e293b;
+      border: 1px solid #475569;
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <h2>TechStart • Cálculo de Médias</h2>
-
-    <div class="campo">
-      <label>1ª Nota:</label>
-      <input type="number" id="n1" step="0.1" placeholder="">
-    </div>
-    <div class="campo">
-      <label>2ª Nota:</label>
-      <input type="number" id="n2" step="0.1" placeholder="">
-    </div>
-    <div class="campo">
-      <label>3ª Nota:</label>
-      <input type="number" id="n3" step="0.1" placeholder="">
-    </div>
-    <div class="campo">
-      <label>4ª Nota:</label>
-      <input type="number" id="n4" step="0.1" placeholder="">
+  <div id="game-container">
+    <canvas id="gameCanvas" width="400" height="550"></canvas>
+    
+    <div class="ui-overlay">
+      <div id="score-display">PONTOS: 0</div>
+      <div id="lives-display">VIDAS: ❤️❤️❤️</div>
     </div>
 
-    <button id="btn-calcular">Calcular Média</button>
-
-    <div class="resultado" id="painel-resultado">
-      <p><strong>Média Final:</strong> <span id="out-media">0.00</span></p>
-      <p><strong>Status de Aprovação:</strong> <span id="out-status">---</span></p>
+    <div id="screen-overlay">
+      <h1 id="overlay-title">SPACE DEFENDER</h1>
+      <p id="overlay-desc">Use as setas ⬅️ ➡️ para mover e <strong>ESPAÇO</strong> para atirar.<br>Destrua os asteroides antes que atinjam a base!</p>
+      <button id="btn-action">JOGAR</button>
     </div>
   </div>
 
-  <!-- SCRIPT JAVASCRIPT EM FLUXO SEQUENCIAL -->
+  <div class="touch-controls">
+    <button class="touch-btn" id="btn-left">◀</button>
+    <button class="touch-btn" id="btn-fire" style="background:#dc2626;">🔥</button>
+    <button class="touch-btn" id="btn-right">▶</button>
+  </div>
+
   <script>
-    document.getElementById('btn-calcular').addEventListener('click', function() {
-      // 1. ENTRADA DE DADOS (Ponto de partida / Leitura de variáveis)
-      const nota1 = parseFloat(document.getElementById('n1').value) ;
-      const nota2 = parseFloat(document.getElementById('n2').value) ;
-      const nota3 = parseFloat(document.getElementById('n3').value) ;
-      const nota4 = parseFloat(document.getElementById('n4').value) ;
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
 
-      // 2. PROCESSAMENTO SEQUENCIAL (Sem usar IF/ELSE)
-      const media = (nota1 + nota2 + nota3 + nota4) / 4.0;
-      const aprovado = (media >= 7.0); // Retorna 'true' ou 'false' diretamente
+    const scoreDisplay = document.getElementById('score-display');
+    const livesDisplay = document.getElementById('lives-display');
+    const overlay = document.getElementById('screen-overlay');
+    const overlayTitle = document.getElementById('overlay-title');
+    const overlayDesc = document.getElementById('overlay-desc');
+    const btnAction = document.getElementById('btn-action');
 
-      // 3. SAÍDA DE DADOS (Exibição dos resultados)
-      document.getElementById('out-media').textContent = media.toFixed(2);
-      document.getElementById('out-status').textContent = aprovado + " (true = Aprovado / false = Reprovado)";
-      document.getElementById('painel-resultado').style.display = 'block';
-      
-      // PONTO DE PARADA: Fim da execução da função
+    // Estado do Jogo
+    let gameRunning = false;
+    let score = 0;
+    let lives = 3;
+    let lastSpawn = 0;
+    let spawnRate = 1200;
+
+    // Nave do Jogador
+    const player = {
+      x: canvas.width / 2 - 15,
+      y: canvas.height - 50,
+      width: 30,
+      height: 30,
+      speed: 5,
+      movingLeft: false,
+      movingRight: false
+    };
+
+    let bullets = [];
+    let enemies = [];
+    let stars = [];
+
+    // Fundo de estrelas animadas
+    for (let i = 0; i < 50; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 2,
+        speed: Math.random() * 1.5 + 0.5
+      });
+    }
+
+    function initGame() {
+      score = 0;
+      lives = 3;
+      bullets = [];
+      enemies = [];
+      player.x = canvas.width / 2 - 15;
+      scoreDisplay.innerText = `PONTOS: ${score}`;
+      updateLivesDisplay();
+      gameRunning = true;
+      overlay.style.display = 'none';
+      requestAnimationFrame(gameLoop);
+    }
+
+    function updateLivesDisplay() {
+      livesDisplay.innerText = 'VIDAS: ' + '❤️'.repeat(Math.max(0, lives));
+    }
+
+    function gameOver() {
+      gameRunning = false;
+      overlayTitle.innerText = 'FIM DE JOGO';
+      overlayDesc.innerHTML = `Sua pontuação final foi: <strong>${score}</strong> pontos!`;
+      btnAction.innerText = 'JOGAR NOVAMENTE';
+      overlay.style.display = 'flex';
+    }
+
+    // Controles por Teclado
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'ArrowLeft' || e.code === 'KeyA') player.movingLeft = true;
+      if (e.code === 'ArrowRight' || e.code === 'KeyD') player.movingRight = true;
+      if (e.code === 'Space' && gameRunning) {
+        shoot();
+        e.preventDefault();
+      }
     });
-  </script>
 
+    window.addEventListener('keyup', (e) => {
+      if (e.code === 'ArrowLeft' || e.code === 'KeyA') player.movingLeft = false;
+      if (e.code === 'ArrowRight' || e.code === 'KeyD') player.movingRight = false;
+    });
+
+    // Controles Touch Mobile
+    const bindTouch = (elem, pressAction, releaseAction) => {
+      elem.addEventListener('touchstart', (e) => { e.preventDefault(); pressAction(); });
+      elem.addEventListener('touchend', (e) => { e.preventDefault(); releaseAction(); });
+    };
+
+    bindTouch(document.getElementById('btn-left'), () => player.movingLeft = true, () => player.movingLeft = false);
+    bindTouch(document.getElementById('btn-right'), () => player.movingRight = true, () => player.movingRight = false);
+    bindTouch(document.getElementById('btn-fire'), () => { if (gameRunning) shoot(); }, () => {});
+
+    btnAction.addEventListener('click', initGame);
+
+    function shoot() {
+      bullets.push({
+        x: player.x + player.width / 2 - 2,
+        y: player.y,
+        width: 4,
+        height: 10,
+        speed: 7
+      });
+    }
+
+    function spawnEnemy() {
+      const size = Math.random() * 20 + 20;
+      enemies.push({
+        x: Math.random() * (canvas.width - size),
+        y: -size,
+        width: size,
+        height: size,
+        speed: Math.random() * 2 + 1.5,
+        color: '#f97316'
+      });
+    }
+
+    // Loop Principal de Renderização
+    function gameLoop(timestamp) {
+      if (!gameRunning) return;
+
+      ctx.fillStyle = '#020617';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Fundo estrelado
+      ctx.fillStyle = '#ffffff';
+      stars.forEach(star => {
+        star.y += star.speed;
+        if (star.y > canvas.height) star.y = 0;
+        ctx.fillRect(star.x, star.y, star.size, star.size);
+      });
+
+      // Movimentação do Jogador
+      if (player.movingLeft && player.x > 0) player.x -= player.speed;
+      if (player.movingRight && player.x < canvas.width - player.width) player.x += player.speed;
+
+      // Desenho do Jogador (Nave Triangular com Gradiente)
+      ctx.fillStyle = '#38bdf8';
+      ctx.beginPath();
+      ctx.moveTo(player.x + player.width / 2, player.y);
+      ctx.lineTo(player.x, player.y + player.height);
+      ctx.lineTo(player.x + player.width, player.y + player.height);
+      ctx.closePath();
+      ctx.fill();
+
+      // Projéteis
+      ctx.fillStyle = '#facc15';
+      for (let i = bullets.length - 1; i >= 0; i--) {
+        const b = bullets[i];
+        b.y -= b.speed;
+        ctx.fillRect(b.x, b.y, b.width, b.height);
+        if (b.y < 0) bullets.splice(i, 1);
+      }
+
+      // Spawner de Inimigos
+      if (timestamp - lastSpawn > spawnRate) {
+        spawnEnemy();
+        lastSpawn = timestamp;
+      }
+
+      // Inimigos / Asteroides
+      for (let i = enemies.length - 1; i >= 0; i--) {
+        const enemy = enemies[i];
+        enemy.y += enemy.speed;
+
+        ctx.fillStyle = enemy.color;
+        ctx.beginPath();
+        ctx.arc(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, enemy.width / 2, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Colisão com Projétil
+        for (let j = bullets.length - 1; j >= 0; j--) {
+          const b = bullets[j];
+          if (
+            b.x < enemy.x + enemy.width &&
+            b.x + b.width > enemy.x &&
+            b.y < enemy.y + enemy.height &&
+            b.y + b.height > enemy.y
+          ) {
+            enemies.splice(i, 1);
+            bullets.splice(j, 1);
+            score += 10;
+            scoreDisplay.innerText = `PONTOS: ${score}`;
+            break;
+          }
+        }
+
+        // Colisão com o Limite Inferior (Passou direto)
+        if (enemy && enemy.y > canvas.height) {
+          enemies.splice(i, 1);
+          lives--;
+          updateLivesDisplay();
+          if (lives <= 0) gameOver();
+        }
+
+        // Colisão com o Jogador
+        if (
+          enemy &&
+          player.x < enemy.x + enemy.width &&
+          player.x + player.width > enemy.x &&
+          player.y < enemy.y + enemy.height &&
+          player.y + player.height > enemy.y
+        ) {
+          enemies.splice(i, 1);
+          lives--;
+          updateLivesDisplay();
+          if (lives <= 0) gameOver();
+        }
+      }
+
+      requestAnimationFrame(gameLoop);
+    }
+  </script>
 </body>
 </html>
