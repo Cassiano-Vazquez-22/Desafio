@@ -259,7 +259,6 @@
 </head>
 <body>
 
-  <!-- Tela de Início -->
   <div class="overlay" id="startScreen">
     <h1>Transmissão Recebida</h1>
     <div class="whatsapp-box">
@@ -268,12 +267,11 @@
       <p>> Desarme isolando exatamente 4 Litros no Balde de 5L.</p>
       <p>> Se conseguir, tire um print e me mande!</p>
     </div>
-    <p>Você tem exatamente <strong>1 minuto e 30 segundos</strong> para deixar o galão de 5 litros com exatamente 4 litros de água.<br>Os baldes não possuem marcações. Prepare-se.</p>
+    <p>Você tem exatamente <strong>1 minuto e 30 segundos</strong> para deixar o balde de 5 litros com exatamente 4 litros de água.<br>Os baldes não possuem marcações. Prepare-se.</p>
     
     <div id="introCountdown">INÍCIO AUTOMÁTICO EM: 25s</div>
   </div>
     
-  <!-- Cabeçalho do Jogo -->
   <div class="header">
     <h1>Para desarmá-la, coloque exatamente 4 litros no balde de 5L usando um de 5L e um de 3L.</h1>
   </div>
@@ -282,10 +280,8 @@
     <div id="timer">01:30</div>
   </div>
 
-  <!-- Área do Jogo (Baldes lado a lado) -->
   <div class="main-container">
     
-    <!-- Balde 5 Litros -->
     <div class="jug-container">
       <h2>Balde 01 [5L]</h2>
       <div class="jug jug-5">
@@ -300,7 +296,6 @@
       </div>
     </div>
 
-    <!-- Balde 3 Litros -->
     <div class="jug-container">
       <h2>Balde 02 [3L]</h2>
       <div class="jug jug-3">
@@ -317,21 +312,18 @@
 
   </div>
 
-  <!-- Tela de Vitória -->
   <div class="overlay" id="winScreen">
     <h1 style="color: #00ff00; text-shadow: 4px 4px 0px #005500;">BOMBA DESARMADA</h1>
     <p style="text-align: center;">Você não explodiu e salvou a cidade!<br><br>Envie o relatório (Print) no WhatsApp!</p>
     <button class="btn-reset" onclick="resetGame()">[ NOVA SIMULAÇÃO ]</button>
   </div>
 
-  <!-- Tela de Derrota -->
   <div class="overlay" id="failScreen">
     <h1 style="color: #ff0000;">BOOM!</h1>
     <p style="text-align: center;">Você EXPLODIU junto com a cidade.</p>
     <button class="btn-reset" onclick="resetGame()">[ TENTAR NOVAMENTE ]</button>
   </div>
 
-  <!-- Rodapé -->
   <footer>BY: Cassiano Vazquez</footer>
 
   <script>
