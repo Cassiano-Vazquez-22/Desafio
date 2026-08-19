@@ -3,66 +3,103 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Desafio: O Mestre dos Sucos</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+  <title>Desafio: Duro de Matar 3</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', sans-serif; }
     
     body {
-      background: #1e1b4b; /* Fundo mais místico/escuro */
+      background: #0f172a;
       color: #f8fafc;
       display: flex;
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
-      padding: 20px;
+      padding: 15px;
     }
 
-    .header { text-align: center; margin-bottom: 30px; }
-    .header h1 { color: #f59e0b; font-size: 2.2rem; text-shadow: 0 2px 4px rgba(245, 158, 11, 0.4); }
-    .header p { color: #cbd5e1; max-width: 650px; margin-top: 10px; line-height: 1.6; font-size: 1.05rem; }
+    /* Cabeçalho e Instruções do WhatsApp */
+    .header { text-align: center; margin-bottom: 20px; width: 100%; max-width: 650px; }
+    .header h1 { color: #facc15; font-size: 2rem; margin-bottom: 10px; text-transform: uppercase;}
+    
+    .whatsapp-box {
+      background: #064e3b;
+      border: 2px solid #10b981;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+    
+    .whatsapp-box p {
+      color: #ecfdf5;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .story { color: #94a3b8; font-size: 0.95rem; margin-bottom: 15px; }
+
+    /* Cronômetro Digital */
+    .timer-box {
+      background: #000;
+      border: 3px solid #334155;
+      border-radius: 8px;
+      padding: 10px 30px;
+      margin-bottom: 25px;
+      box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+    }
+    
+    #timer {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 3rem;
+      color: #10b981; /* Fica vermelho quando < 30s */
+      text-shadow: 0 0 10px currentColor;
+    }
 
     .game-area {
       display: flex;
-      gap: 40px;
+      gap: 30px;
       margin-bottom: 30px;
       flex-wrap: wrap;
       justify-content: center;
+      width: 100%;
     }
 
     .jug-container {
       display: flex;
       flex-direction: column;
       align-items: center;
-      background: #312e81;
+      background: #1e293b;
       padding: 20px;
       border-radius: 16px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-      border: 1px solid #4338ca;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+      flex: 1;
+      min-width: 280px;
+      max-width: 320px;
     }
 
-    /* Desenho dos Baldes / Frascos */
+    .jug-container h2 { margin-bottom: 15px; color:#cbd5e1; font-size: 1.2rem; text-align: center; }
+
+    /* Baldes */
     .jug {
       position: relative;
-      border: 4px solid #94a3b8;
+      border: 4px solid #cbd5e1;
       border-top: none;
-      border-radius: 0 0 16px 16px;
+      border-radius: 0 0 12px 12px;
       background: rgba(255, 255, 255, 0.05);
       overflow: hidden;
       display: flex;
       align-items: flex-end;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
 
-    .jug-5 { width: 120px; height: 250px; }
-    .jug-3 { width: 120px; height: 150px; }
+    .jug-5 { width: 130px; height: 260px; }
+    .jug-3 { width: 130px; height: 156px; }
 
-    /* Líquido Lendário */
-    .juice {
+    .water {
       width: 100%;
-      background: linear-gradient(180deg, #fbbf24 0%, #ea580c 100%);
-      box-shadow: 0 0 15px rgba(245, 158, 11, 0.6) inset;
-      transition: height 0.4s ease-in-out;
+      background: linear-gradient(180deg, #38bdf8 0%, #0369a1 100%);
+      transition: height 0.3s ease-in-out;
       display: flex;
       align-items: flex-start;
       justify-content: center;
@@ -72,53 +109,40 @@
     .water-text {
       color: white;
       font-weight: 900;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-      font-size: 1.2rem;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+      font-size: 1.3rem;
     }
 
-    /* Botões de Ação */
-    .controls { display: grid; grid-template-columns: 1fr; gap: 8px; width: 100%; }
+    /* Botões */
+    .controls { display: grid; grid-template-columns: 1fr; gap: 10px; width: 100%; }
     
     button {
-      padding: 10px 15px;
+      padding: 12px;
       border: none;
       border-radius: 8px;
       font-weight: 700;
       cursor: pointer;
       transition: background 0.2s, transform 0.1s;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
     }
     
     button:active { transform: scale(0.96); }
-    .btn-fill { background: #10b981; color: white; }
-    .btn-fill:hover { background: #059669; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    
+    .btn-fill { background: #0284c7; color: white; }
+    .btn-fill:hover { background: #0369a1; }
+    
     .btn-empty { background: #ef4444; color: white; }
     .btn-empty:hover { background: #dc2626; }
+    
     .btn-transfer { background: #8b5cf6; color: white; }
     .btn-transfer:hover { background: #7c3aed; }
 
-    /* Tabela de Log */
-    .log-container {
-      width: 100%;
-      max-width: 750px;
-      background: #312e81;
-      border-radius: 12px;
-      padding: 20px;
-      margin-top: 10px;
-      border: 1px solid #4338ca;
-    }
-
-    .log-container h2 { margin-bottom: 15px; font-size: 1.2rem; border-bottom: 1px solid #4338ca; padding-bottom: 10px; color: #f59e0b;}
-
-    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;}
-    th, td { padding: 12px; border-bottom: 1px solid #4338ca; }
-    th { color: #a78bfa; font-weight: 900; }
-
-    /* Modal de Vitória */
+    /* Modais */
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.95);
+      background: rgba(0,0,0,0.92);
       display: none;
       flex-direction: column;
       align-items: center;
@@ -128,200 +152,202 @@
       padding: 20px;
     }
 
-    .overlay h1 { color: #f59e0b; font-size: 3rem; margin-bottom: 15px; text-shadow: 0 0 20px rgba(245, 158, 11, 0.6); }
-    .overlay button { background: #f59e0b; color: #1e1b4b; padding: 15px 30px; font-size: 1.2rem; margin-top: 25px; font-weight: 900;}
-    .overlay button:hover { background: #fbbf24; }
+    .overlay h1 { font-size: 3rem; margin-bottom: 10px; }
+    .overlay p { font-size: 1.2rem; color: #cbd5e1; max-width: 400px; margin-bottom: 25px; line-height: 1.5; }
+    
+    .btn-reset { background: #facc15; color: #000; padding: 15px 30px; font-size: 1.2rem; }
+    .btn-reset:hover { background: #eab308; }
+
+    /* Tabela Oculta (Apenas para Lógica por trás) */
+    .log-container { display: none; }
   </style>
 </head>
 <body>
 
   <div class="header">
-    <h1>O Desafio do Mestre dos Sucos</h1>
-    <p>O desafio não é sobre medir volumes, mas sobre provar a sua capacidade de pensar em termos de <strong>Lógica Sequencial</strong>. O <em>Extrato Concentrado Lendário</em> é o nosso resultado (output), e os baldes são nossas <strong>Variáveis de Memória (B3 e B5)</strong>.</p>
-    <p style="color: #10b981; font-weight: bold; margin-top: 10px;">Objetivo: Isole exatamente 4 Litros na Variável B5.</p>
+    <h1>Duro de Matar 3</h1>
+    <div class="whatsapp-box">
+      <p>🚨 ESTOU FAZENDO ESTE DESAFIO PARA UM PROJETO! 🚨<br><br>Tente desarmar a bomba colocando exatamente 4 Litros no Balde de 5L. Se você conseguir, TIRE UM PRINT DA TELA DE VITÓRIA e me mande para eu postar no meu Status do WhatsApp!</p>
+    </div>
+    <p class="story">A bomba está armada na fonte. Você tem exatamente 2 minutos para colocar 4 litros exatos de água no galão no sensor. O tempo começou a correr!</p>
+  </div>
+
+  <div class="timer-box">
+    <div id="timer">02:00</div>
   </div>
 
   <div class="game-area">
-    <!-- Variável B5 -->
+    <!-- Balde 5 Litros -->
     <div class="jug-container">
-      <h2 style="margin-bottom: 10px; color:#e0e7ff;">Variável B5 (5L)</h2>
+      <h2>Balde de 5 Litros</h2>
       <div class="jug jug-5">
-        <div class="juice" id="juice-5" style="height: 0%;">
+        <div class="water" id="water-5" style="height: 0%;">
           <span class="water-text" id="text-5">0L</span>
         </div>
       </div>
       <div class="controls">
-        <button class="btn-fill" onclick="fill(5)">Preencher B5</button>
-        <button class="btn-transfer" onclick="transfer(5, 3)">Transferir B5 ➔ B3</button>
-        <button class="btn-empty" onclick="empty(5)">Limpar Memória (B5)</button>
+        <button class="btn-fill" onclick="fill(5)">Encher Balde de 5 Litros</button>
+        <button class="btn-transfer" onclick="transfer(5, 3)">Transferir para Balde de 3 Litros</button>
+        <button class="btn-empty" onclick="empty(5)">Esvaziar Balde de 5 Litros</button>
       </div>
     </div>
 
-    <!-- Variável B3 -->
+    <!-- Balde 3 Litros -->
     <div class="jug-container">
-      <h2 style="margin-bottom: 10px; color:#e0e7ff;">Variável B3 (3L)</h2>
+      <h2>Balde de 3 Litros</h2>
       <div class="jug jug-3">
-        <div class="juice" id="juice-3" style="height: 0%;">
+        <div class="water" id="water-3" style="height: 0%;">
           <span class="water-text" id="text-3">0L</span>
         </div>
       </div>
       <div class="controls">
-        <button class="btn-fill" onclick="fill(3)">Preencher B3</button>
-        <button class="btn-transfer" onclick="transfer(3, 5)">Transferir B3 ➔ B5</button>
-        <button class="btn-empty" onclick="empty(3)">Limpar Memória (B3)</button>
+        <button class="btn-fill" onclick="fill(3)">Encher Balde de 3 Litros</button>
+        <button class="btn-transfer" onclick="transfer(3, 5)">Transferir para Balde de 5 Litros</button>
+        <button class="btn-empty" onclick="empty(3)">Esvaziar Balde de 3 Litros</button>
       </div>
     </div>
   </div>
 
-  <div class="log-container">
-    <h2>Histórico do Fluxo Sequencial</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Passo</th>
-          <th>Comando Executado</th>
-          <th>Estado B5</th>
-          <th>Estado B3</th>
-        </tr>
-      </thead>
-      <tbody id="log-body">
-        <tr>
-          <td>0</td>
-          <td>(Início) Declaração de Variáveis (Vazias).</td>
-          <td>0</td>
-          <td>0</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
   <!-- Tela de Vitória -->
   <div class="overlay" id="winScreen">
-    <h1>EXTRATO LENDÁRIO SINTETIZADO!</h1>
-    <p style="font-size: 1.2rem; max-width: 550px; color: #cbd5e1; line-height: 1.6;">
-      Lógica validada com sucesso! Você conseguiu usar a sequência correta de comandos para manipular as variáveis de memória e gerar exatamente 4 Litros do Extrato Concentrado Lendário.
-    </p>
-    <button onclick="resetGame()">Reiniciar Algoritmo</button>
+    <h1 style="color: #10b981;">BOMBA DESARMADA!</h1>
+    <p>Incrível! Você acertou a lógica! Tire o print desta tela e me mande lá no WhatsApp agora mesmo! 📸</p>
+    <button class="btn-reset" onclick="resetGame()">Jogar Novamente</button>
+  </div>
+
+  <!-- Tela de Derrota -->
+  <div class="overlay" id="failScreen">
+    <h1 style="color: #ef4444;">BOOM! 💥</h1>
+    <p>O tempo acabou e a bomba explodiu! A Lógica não foi rápida o suficiente.</p>
+    <button class="btn-reset" onclick="resetGame()">Tentar de Novo</button>
   </div>
 
   <script>
-    // Declaração das Variáveis de Memória
+    // Lógica e Memória do Jogo
     let b5 = 0; 
     let b3 = 0; 
     const MAX_B5 = 5;
     const MAX_B3 = 3;
-    let stepCount = 0;
+    let gameActive = true;
 
-    // Elementos do DOM
-    const juice5 = document.getElementById('juice-5');
-    const text5 = document.getElementById('text-5');
-    const juice3 = document.getElementById('juice-3');
-    const text3 = document.getElementById('text-3');
-    const logBody = document.getElementById('log-body');
-    const winScreen = document.getElementById('winScreen');
+    // Cronômetro
+    let timeLeft = 120; // 120 segundos = 2 minutos
+    let timerInterval = null;
+    const timerDisplay = document.getElementById('timer');
 
-    // Funções de Processamento
-    function fill(jug) {
-      let actionText = '';
-      if (jug === 5 && b5 !== MAX_B5) {
-        b5 = MAX_B5;
-        actionText = "Carregar Variável B5 com limite máximo de Extrato (5L).";
-        updateState(actionText);
-      } else if (jug === 3 && b3 !== MAX_B3) {
-        b3 = MAX_B3;
-        actionText = "Carregar Variável B3 com limite máximo de Extrato (3L).";
-        updateState(actionText);
+    // Inicia o cronômetro assim que o site carrega
+    function startTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        if (!gameActive) return;
+        timeLeft--;
+        updateTimerUI();
+
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          gameOver();
+        }
+      }, 1000);
+    }
+
+    function updateTimerUI() {
+      let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+      let s = (timeLeft % 60).toString().padStart(2, '0');
+      timerDisplay.innerText = `${m}:${s}`;
+
+      // Muda para vermelho nos últimos 30 segundos
+      if (timeLeft <= 30) {
+        timerDisplay.style.color = '#ef4444';
+      } else {
+        timerDisplay.style.color = '#10b981';
       }
+    }
+
+    function gameOver() {
+      gameActive = false;
+      document.getElementById('failScreen').style.display = 'flex';
+    }
+
+    function gameWon() {
+      gameActive = false;
+      clearInterval(timerInterval);
+      setTimeout(() => {
+        document.getElementById('winScreen').style.display = 'flex';
+      }, 500); // Dá tempo da animação da água subir antes da tela aparecer
+    }
+
+    // Elementos DOM
+    const water5 = document.getElementById('water-5');
+    const text5 = document.getElementById('text-5');
+    const water3 = document.getElementById('water-3');
+    const text3 = document.getElementById('text-3');
+
+    // Funções dos Botões
+    function fill(jug) {
+      if (!gameActive) return;
+      if (jug === 5 && b5 !== MAX_B5) { b5 = MAX_B5; updateState(); } 
+      else if (jug === 3 && b3 !== MAX_B3) { b3 = MAX_B3; updateState(); }
     }
 
     function empty(jug) {
-      let actionText = '';
-      if (jug === 5 && b5 !== 0) {
-        b5 = 0;
-        actionText = "Limpar os dados da Variável B5 (0L).";
-        updateState(actionText);
-      } else if (jug === 3 && b3 !== 0) {
-        b3 = 0;
-        actionText = "Limpar os dados da Variável B3 (0L).";
-        updateState(actionText);
-      }
+      if (!gameActive) return;
+      if (jug === 5 && b5 !== 0) { b5 = 0; updateState(); } 
+      else if (jug === 3 && b3 !== 0) { b3 = 0; updateState(); }
     }
 
     function transfer(fromJug, toJug) {
-      let actionText = '';
-      
+      if (!gameActive) return;
       if (fromJug === 5 && toJug === 3) {
         if (b5 === 0 || b3 === MAX_B3) return; 
         const spaceLeftInB3 = MAX_B3 - b3;
         const amountToTransfer = Math.min(b5, spaceLeftInB3);
-        
         b5 -= amountToTransfer;
         b3 += amountToTransfer;
-        actionText = `Transferir fluxo da B5 para B3 (Moveu ${amountToTransfer}L).`;
-        updateState(actionText);
-        
+        updateState();
       } else if (fromJug === 3 && toJug === 5) {
         if (b3 === 0 || b5 === MAX_B5) return;
         const spaceLeftInB5 = MAX_B5 - b5;
         const amountToTransfer = Math.min(b3, spaceLeftInB5);
-        
         b3 -= amountToTransfer;
         b5 += amountToTransfer;
-        actionText = `Transferir fluxo da B3 para B5 (Moveu ${amountToTransfer}L).`;
-        updateState(actionText);
+        updateState();
       }
     }
 
-    // Saída de Dados e Verificação
-    function updateState(actionText) {
-      stepCount++;
-      
+    function updateState() {
+      // Animação Balde 5L
       const percent5 = (b5 / MAX_B5) * 100;
-      juice5.style.height = `${percent5}%`;
+      water5.style.height = `${percent5}%`;
       text5.innerText = `${b5}L`;
       
+      // Animação Balde 3L
       const percent3 = (b3 / MAX_B3) * 100;
-      juice3.style.height = `${percent3}%`;
+      water3.style.height = `${percent3}%`;
       text3.innerText = `${b3}L`;
 
-      // Atualiza o Log / Histórico
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${stepCount}</td>
-        <td>${actionText}</td>
-        <td>${b5}</td>
-        <td>${b3}</td>
-      `;
-      logBody.appendChild(row);
-
-      // Verificação do Output / Condição de Parada
+      // Condição de Vitória!
       if (b5 === 4) {
-        setTimeout(() => {
-          winScreen.style.display = 'flex';
-          const finalRow = document.createElement('tr');
-          finalRow.style.color = '#10b981';
-          finalRow.innerHTML = `
-            <td>${stepCount + 1}</td>
-            <td><strong>(Output/Fim) Algoritmo Concluído.</strong></td>
-            <td><strong>${b5}</strong></td>
-            <td><strong>${b3}</strong></td>
-          `;
-          logBody.appendChild(finalRow);
-        }, 500); 
+        gameWon();
       }
     }
 
     function resetGame() {
-      b5 = 0;
-      b3 = 0;
-      stepCount = 0;
-      logBody.innerHTML = `<tr><td>0</td><td>(Início) Declaração de Variáveis (Vazias).</td><td>0</td><td>0</td></tr>`;
-      juice5.style.height = '0%';
-      text5.innerText = '0L';
-      juice3.style.height = '0%';
-      text3.innerText = '0L';
-      winScreen.style.display = 'none';
+      b5 = 0; b3 = 0;
+      timeLeft = 120;
+      gameActive = true;
+      
+      water5.style.height = '0%'; text5.innerText = '0L';
+      water3.style.height = '0%'; text3.innerText = '0L';
+      
+      document.getElementById('winScreen').style.display = 'none';
+      document.getElementById('failScreen').style.display = 'none';
+      
+      updateTimerUI();
+      startTimer();
     }
+
+    // Dá o Play no tempo quando a tela abrir
+    startTimer();
   </script>
 </body>
 </html>
