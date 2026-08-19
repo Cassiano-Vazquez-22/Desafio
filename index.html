@@ -36,37 +36,38 @@
     .header { text-align: center; margin-bottom: 20px; width: 100%; max-width: 650px; margin-top: 10px; z-index: 10;}
     .header h1 { 
       color: #ffcc00; 
-      font-size: 2rem; 
+      font-size: 1.6rem; 
       margin-bottom: 10px; 
       text-transform: uppercase;
       text-shadow: 2px 2px 0px #aa0000;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
+      line-height: 1.4;
     }
 
     /* Cronômetro Estilo Bomba */
     .timer-box {
       background: #000;
       border: 4px inset #444;
-      padding: 10px 40px;
+      padding: 10px 30px;
       margin-bottom: 20px;
       box-shadow: 0 0 15px rgba(255, 0, 0, 0.4) inset;
       z-index: 10;
     }
     
     #timer {
-      font-size: 4rem;
+      font-size: 3.5rem;
       color: #ff3333;
       text-shadow: 0 0 8px #ff0000;
       letter-spacing: 5px;
     }
 
-    /* Layout Principal */
+    /* Layout Principal (Lado a Lado) */
     .main-container {
       display: flex;
       flex-direction: row;
-      gap: 20px;
+      gap: 15px;
       width: 100%;
-      max-width: 800px;
+      max-width: 700px;
       justify-content: center;
       z-index: 10;
     }
@@ -77,7 +78,7 @@
       flex-direction: column;
       align-items: center;
       background: linear-gradient(135deg, #333 0%, #1a1a1a 100%);
-      padding: 20px;
+      padding: 15px;
       border: 2px solid #555;
       border-top-color: #777;
       border-left-color: #777;
@@ -86,7 +87,7 @@
       width: 50%;
     }
 
-    .jug-container h2 { margin-bottom: 15px; color:#fff; font-size: 1.2rem; text-transform: uppercase; text-shadow: 1px 1px 0px #000; text-align: center;}
+    .jug-container h2 { margin-bottom: 12px; color:#fff; font-size: 1.1rem; text-transform: uppercase; text-shadow: 1px 1px 0px #000; text-align: center;}
 
     /* Baldes Industriais */
     .jug {
@@ -97,12 +98,12 @@
       overflow: hidden;
       display: flex;
       align-items: flex-end;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       box-shadow: inset 0px -10px 20px rgba(255,255,255,0.1);
     }
 
-    .jug-5 { width: 130px; height: 260px; }
-    .jug-3 { width: 130px; height: 156px; }
+    .jug-5 { width: 110px; height: 220px; }
+    .jug-3 { width: 110px; height: 132px; }
 
     .water {
       width: 100%;
@@ -119,26 +120,26 @@
       color: white;
       font-weight: bold;
       text-shadow: 2px 2px 0px #000;
-      font-size: 1.5rem;
+      font-size: 1.3rem;
     }
 
     /* Botões Físicos */
-    .controls { display: grid; grid-template-columns: 1fr; gap: 10px; width: 100%; }
+    .controls { display: grid; grid-template-columns: 1fr; gap: 8px; width: 100%; }
     
     button {
-      padding: 12px;
+      padding: 10px 5px;
       border: 2px solid;
       font-weight: bold;
       cursor: pointer;
       text-transform: uppercase;
-      font-size: 0.9rem;
-      letter-spacing: 1px;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
       line-height: 1.2;
     }
     
     button:active { 
       border-style: inset;
-      padding: 13px 11px 11px 13px;
+      padding: 11px 4px 9px 6px;
     }
     
     .btn-fill { 
@@ -163,47 +164,58 @@
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.85);
+      background: rgba(0,0,0,0.88);
       display: none;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       z-index: 1000;
       text-align: center;
-      padding: 20px;
+      padding: 15px;
     }
 
     #startScreen { display: flex; }
 
     .overlay h1 { 
-      font-size: 3rem; 
-      margin-bottom: 15px; 
+      font-size: 2.2rem; 
+      margin-bottom: 12px; 
       color: #ffcc00; 
       text-transform: uppercase; 
-      text-shadow: 4px 4px 0px #aa0000;
+      text-shadow: 3px 3px 0px #aa0000;
     }
-    
-    .overlay p { font-size: 1.2rem; color: #fff; max-width: 600px; margin-bottom: 25px; line-height: 1.5; background: #000; padding: 20px; border: 2px solid #555; }
     
     .whatsapp-box {
       background: #002200;
       border: 2px solid #00ff00;
-      padding: 15px;
-      margin-bottom: 15px;
-      max-width: 600px;
+      padding: 12px;
+      margin-bottom: 12px;
+      max-width: 500px;
+      width: 100%;
       box-shadow: 0 0 10px #00ff00 inset;
+      text-align: left;
     }
     
-    .whatsapp-box p { color: #00ff00; border: none; background: transparent; padding: 0; text-shadow: 0 0 3px #00ff00; margin: 0; font-size: 1.1rem;}
+    .whatsapp-box p { color: #00ff00; text-shadow: 0 0 3px #00ff00; margin: 0; font-size: 0.95rem; line-height: 1.4;}
 
-    .btn-reset { background: #ffaa00; color: #000; padding: 15px 30px; font-size: 1.2rem; border: 3px solid #ffeeaa; border-right-color:#885500; border-bottom-color:#885500; margin-top: 20px; cursor: pointer; font-weight: bold;}
+    .overlay p { 
+      font-size: 0.95rem; 
+      color: #fff; 
+      max-width: 500px; 
+      margin-bottom: 15px; 
+      line-height: 1.4; 
+      background: #000; 
+      padding: 15px; 
+      border: 2px solid #555; 
+      text-align: left;
+    }
+
+    .btn-reset { background: #ffaa00; color: #000; padding: 12px 25px; font-size: 1.1rem; border: 3px solid #ffeeaa; border-right-color:#885500; border-bottom-color:#885500; margin-top: 15px; cursor: pointer; font-weight: bold;}
     .btn-reset:hover { background: #ffcc00; }
-    .btn-reset:active { padding: 18px 27px 12px 33px; border-color: #885500 #ffeeaa #ffeeaa #885500; }
 
     /* Estilo do Countdown da Instrução */
     #introCountdown {
-      margin-top: 20px;
-      font-size: 2rem;
+      margin-top: 15px;
+      font-size: 1.6rem;
       color: #ff3333;
       text-shadow: 0 0 8px #ff3333;
       animation: blink 1s infinite;
@@ -217,51 +229,31 @@
     /* Rodapé (Assinatura) */
     footer {
       position: absolute;
-      bottom: 15px;
-      right: 20px;
+      bottom: 10px;
+      right: 15px;
       color: #00ff00;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       text-shadow: 0 0 5px #00ff00;
       letter-spacing: 2px;
       z-index: 10;
     }
 
-    /* ADAPTAÇÕES PARA CELULAR (Garante lado a lado) */
-    @media (max-width: 768px) {
-      .header h1 { font-size: 1.1rem; margin-top: 10px; }
-      
-      .timer-box { padding: 10px 20px; margin-bottom: 15px;}
+    /* ADAPTAÇÕES PARA CELULARES PEQUENOS */
+    @media (max-width: 480px) {
+      .header h1 { font-size: 0.95rem; }
       #timer { font-size: 2.5rem; }
+      .timer-box { padding: 8px 15px; }
       
-      .main-container { gap: 10px; }
-      .jug-container { padding: 10px; }
-      .jug-container h2 { font-size: 0.85rem; }
-
-      /* Reduz o tamanho dos baldes para caberem lado a lado */
-      .jug-5 { width: 80px; height: 160px; }
-      .jug-3 { width: 80px; height: 96px; }
-      .water-text { font-size: 1.1rem; }
-
-      /* Reduz os botões */
-      .controls { gap: 8px; }
-      button { padding: 8px; font-size: 0.65rem; }
+      .jug-5 { width: 75px; height: 150px; }
+      .jug-3 { width: 75px; height: 90px; }
+      .water-text { font-size: 1rem; }
       
-      .overlay h1 { font-size: 2rem; }
-      .overlay p { font-size: 0.95rem; padding: 15px; }
-      .whatsapp-box p { font-size: 0.95rem; }
-      #introCountdown { font-size: 1.5rem; }
+      button { font-size: 0.6rem; padding: 8px 2px; }
+      .jug-container { padding: 8px; }
       
-      .btn-reset { font-size: 1rem; padding: 10px 20px; }
-      
-      /* Solta o rodapé em telas pequenas para não atrapalhar os botões */
-      footer {
-        position: relative;
-        bottom: auto;
-        right: auto;
-        text-align: center;
-        margin-top: 15px;
-        padding-bottom: 20px;
-      }
+      .overlay h1 { font-size: 1.8rem; }
+      .overlay p, .whatsapp-box p { font-size: 0.85rem; padding: 10px; }
+      footer { position: relative; bottom: auto; right: auto; text-align: center; margin-top: 20px; }
     }
   </style>
 </head>
@@ -271,16 +263,16 @@
   <div class="overlay" id="startScreen">
     <h1>Transmissão Recebida</h1>
     <div class="whatsapp-box">
-      <p>> ALERTA DE MISSÃO: NÃO TENTE FUGIR!<br><br><br><br>>Uma Bomba Foi Acionada<br>>Desarme a bomba isolando exatamente 4 Litros no Balde de 5L. <br>> Se conseguir, tire um print da tela e me mande</p>
+      <p>> ALERTA DE MISSÃO: NÃO TENTE FUGIR!<br>> Uma Bomba Foi Acionada.<br>> Desarme isolando exatamente 4 Litros no Balde de 5L.<br>> Se conseguir, tire um print e me mande!</p>
     </div>
-    <p>Você tem exatamente <strong>1 minuto e 30 segundos</strong> para deixar o galão de 5 litros com exatamente 4 litros de água.<br> Prepare-se.</p>
+    <p>Você tem exatamente <strong>1 minuto e 30 segundos</strong> para deixar o balde de 5 litros com exatamente 4 litros de água.<br>Os baldes não possuem marcações. Prepare-se.</p>
     
     <div id="introCountdown">INÍCIO AUTOMÁTICO EM: 25s</div>
   </div>
     
   <!-- Cabeçalho do Jogo -->
   <div class="header">
-    <h1>Para desarmá-la, você precisa colocar exatamente 4 litros de água no balde de 5 litros, utilizando apenas ele e um balde de 3 litros.</h1>
+    <h1>Para desarmá-la, coloque exatamente 4 litros no balde de 5L usando um de 5L e um de 3L.</h1>
   </div>
 
   <div class="timer-box">
@@ -299,9 +291,9 @@
         </div>
       </div>
       <div class="controls">
-        <button class="btn-fill" onclick="fill(5)">Encher Balde 5L</button>
-        <button class="btn-transfer" onclick="transfer(5, 3)">Transferir 5L ➔ 3L</button>
-        <button class="btn-empty" onclick="empty(5)">Esvaziar Balde 5L</button>
+        <button class="btn-fill" onclick="fill(5)">Encher 5L</button>
+        <button class="btn-transfer" onclick="transfer(5, 3)">Transf. ➔ 3L</button>
+        <button class="btn-empty" onclick="empty(5)">Esvaziar 5L</button>
       </div>
     </div>
 
@@ -314,9 +306,9 @@
         </div>
       </div>
       <div class="controls">
-        <button class="btn-fill" onclick="fill(3)">Encher Balde 3L</button>
-        <button class="btn-transfer" onclick="transfer(3, 5)">Transferir 3L ➔ 5L</button>
-        <button class="btn-empty" onclick="empty(3)">Esvaziar Balde 3L</button>
+        <button class="btn-fill" onclick="fill(3)">Encher 3L</button>
+        <button class="btn-transfer" onclick="transfer(3, 5)">Transf. ➔ 5L</button>
+        <button class="btn-empty" onclick="empty(3)">Esvaziar 3L</button>
       </div>
     </div>
 
@@ -325,14 +317,14 @@
   <!-- Tela de Vitória -->
   <div class="overlay" id="winScreen">
     <h1 style="color: #00ff00; text-shadow: 4px 4px 0px #005500;">BOMBA DESARMADA</h1>
-    <p>Tu não explodiu e salvou a cidade!<br><br>Envie o relatório (Print) no WhatsApp!</p>
+    <p style="text-align: center;">Você não explodiu e salvou a cidade!<br><br>Envie o relatório (Print) no WhatsApp!</p>
     <button class="btn-reset" onclick="resetGame()">[ NOVA SIMULAÇÃO ]</button>
   </div>
 
   <!-- Tela de Derrota -->
   <div class="overlay" id="failScreen">
     <h1 style="color: #ff0000;">BOOM!</h1>
-    <p>Você EXPLODIU junto com a cidade.</p>
+    <p style="text-align: center;">Você EXPLODIU junto com a cidade.</p>
     <button class="btn-reset" onclick="resetGame()">[ TENTAR NOVAMENTE ]</button>
   </div>
 
@@ -364,7 +356,7 @@
     const timerDisplay = document.getElementById('timer');
 
     function beginChallenge() {
-      clearInterval(introTimerInterval); // Para o contador de instruções
+      clearInterval(introTimerInterval);
       document.getElementById('startScreen').style.display = 'none';
       gameActive = true;
       startTimer();
