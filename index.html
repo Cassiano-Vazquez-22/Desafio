@@ -275,7 +275,7 @@
     </div>
     <p>Você tem exatamente <strong>1 minuto e 30 segundos</strong> Para Desarma-la você deve colocar 4 litros de água no galão com capacidade para 5 litros.<br> Prepare-se.</p>
     
-    <div id="introCountdown">INÍCIO AUTOMÁTICO EM: 30s</div>
+    <div id="introCountdown">INÍCIO AUTOMÁTICO EM: 20s</div>
   </div>
     
   <!-- Cabeçalho do Jogo -->
@@ -341,7 +341,7 @@
 
   <script>
     // Temporizador da Tela de Instruções
-    let introTimeLeft = 30;
+    let introTimeLeft = 20;
     let introTimerInterval = setInterval(() => {
       introTimeLeft--;
       document.getElementById('introCountdown').innerText = `INÍCIO AUTOMÁTICO EM: ${introTimeLeft}s`;
