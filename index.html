@@ -23,7 +23,6 @@
       position: relative;
     }
 
-    /* Efeito Scanlines (Monitor antigo) */
     body::after {
       content: "";
       position: fixed;
@@ -33,10 +32,10 @@
       z-index: 999;
     }
 
-    .header { text-align: center; margin-bottom: 20px; width: 100%; max-width: 650px; margin-top: 10px; z-index: 10;}
+    .header { text-align: center; margin-bottom: 20px; width: 100%; max-width: 650px; margin-top: 10px; z-index: 10; }
     .header h1 { 
       color: #ffcc00; 
-      font-size: 1.6rem; 
+      font-size: 1.5rem; 
       margin-bottom: 10px; 
       text-transform: uppercase;
       text-shadow: 2px 2px 0px #aa0000;
@@ -44,7 +43,6 @@
       line-height: 1.4;
     }
 
-    /* Cronômetro Estilo Bomba */
     .timer-box {
       background: #000;
       border: 4px inset #444;
@@ -61,7 +59,6 @@
       letter-spacing: 5px;
     }
 
-    /* Layout Principal (Lado a Lado) */
     .main-container {
       display: flex;
       flex-direction: row;
@@ -72,7 +69,6 @@
       z-index: 10;
     }
 
-    /* Painéis Metálicos Estilo Anos 2000 */
     .jug-container {
       display: flex;
       flex-direction: column;
@@ -87,9 +83,8 @@
       width: 50%;
     }
 
-    .jug-container h2 { margin-bottom: 12px; color:#fff; font-size: 1.1rem; text-transform: uppercase; text-shadow: 1px 1px 0px #000; text-align: center;}
+    .jug-container h2 { margin-bottom: 12px; color:#fff; font-size: 1.1rem; text-transform: uppercase; text-shadow: 1px 1px 0px #000; text-align: center; }
 
-    /* Baldes Industriais */
     .jug {
       position: relative;
       border: 4px solid #888;
@@ -123,7 +118,6 @@
       font-size: 1.3rem;
     }
 
-    /* Botões Físicos */
     .controls { display: grid; grid-template-columns: 1fr; gap: 8px; width: 100%; }
     
     button {
@@ -139,7 +133,6 @@
     
     button:active { 
       border-style: inset;
-      padding: 11px 4px 9px 6px;
     }
     
     .btn-fill { 
@@ -160,7 +153,6 @@
       border-color: #ffcc00 #332200 #332200 #ffcc00;
     }
 
-    /* Telas de Sobreposição */
     .overlay {
       position: fixed;
       inset: 0;
@@ -195,24 +187,34 @@
       text-align: left;
     }
     
-    .whatsapp-box p { color: #00ff00; text-shadow: 0 0 3px #00ff00; margin: 0; font-size: 0.95rem; line-height: 1.4;}
+    .whatsapp-box p { color: #00ff00; text-shadow: 0 0 3px #00ff00; margin: 0; font-size: 0.9rem; line-height: 1.3; }
 
     .overlay p { 
-      font-size: 0.95rem; 
+      font-size: 0.9rem; 
       color: #fff; 
       max-width: 500px; 
       margin-bottom: 15px; 
-      line-height: 1.4; 
+      line-height: 1.3; 
       background: #000; 
-      padding: 15px; 
+      padding: 12px; 
       border: 2px solid #555; 
       text-align: left;
     }
 
-    .btn-reset { background: #ffaa00; color: #000; padding: 12px 25px; font-size: 1.1rem; border: 3px solid #ffeeaa; border-right-color:#885500; border-bottom-color:#885500; margin-top: 15px; cursor: pointer; font-weight: bold;}
+    .btn-reset { 
+      background: #ffaa00; 
+      color: #000; 
+      padding: 12px 25px; 
+      font-size: 1.1rem; 
+      border: 3px solid #ffeeaa; 
+      border-right-color:#885500; 
+      border-bottom-color:#885500; 
+      margin-top: 15px; 
+      cursor: pointer; 
+      font-weight: bold; 
+    }
     .btn-reset:hover { background: #ffcc00; }
 
-    /* Estilo do Countdown da Instrução */
     #introCountdown {
       margin-top: 15px;
       font-size: 1.6rem;
@@ -226,7 +228,6 @@
       50% { opacity: 0.5; }
     }
 
-    /* Rodapé (Assinatura) */
     footer {
       position: absolute;
       bottom: 10px;
@@ -238,11 +239,10 @@
       z-index: 10;
     }
 
-    /* ADAPTAÇÕES PARA CELULARES PEQUENOS */
     @media (max-width: 480px) {
-      .header h1 { font-size: 0.95rem; }
-      #timer { font-size: 2.5rem; }
-      .timer-box { padding: 8px 15px; }
+      .header h1 { font-size: 0.9rem; }
+      #timer { font-size: 2.3rem; }
+      .timer-box { padding: 6px 12px; }
       
       .jug-5 { width: 75px; height: 150px; }
       .jug-3 { width: 75px; height: 90px; }
@@ -251,9 +251,9 @@
       button { font-size: 0.6rem; padding: 8px 2px; }
       .jug-container { padding: 8px; }
       
-      .overlay h1 { font-size: 1.8rem; }
-      .overlay p, .whatsapp-box p { font-size: 0.85rem; padding: 10px; }
-      footer { position: relative; bottom: auto; right: auto; text-align: center; margin-top: 20px; }
+      .overlay h1 { font-size: 1.6rem; }
+      .overlay p, .whatsapp-box p { font-size: 0.8rem; padding: 8px; }
+      footer { position: relative; bottom: auto; right: auto; text-align: center; margin-top: 15px; }
     }
   </style>
 </head>
@@ -263,9 +263,12 @@
   <div class="overlay" id="startScreen">
     <h1>Transmissão Recebida</h1>
     <div class="whatsapp-box">
-      <p>> ALERTA DE MISSÃO: NÃO TENTE FUGIR!<br>> Uma Bomba Foi Acionada.<br>> Desarme isolando exatamente 4 Litros no Balde de 5L.<br>> Se conseguir, tire um print e me mande!</p>
+      <p>> ALERTA DE MISSÃO: NÃO TENTE FUGIR!</p>
+      <p>> Uma Bomba Foi Acionada.</p>
+      <p>> Desarme isolando exatamente 4 Litros no Balde de 5L.</p>
+      <p>> Se conseguir, tire um print e me mande!</p>
     </div>
-    <p>Você tem exatamente <strong>1 minuto e 30 segundos</strong> para deixar o balde de 5 litros com exatamente 4 litros de água.<br>Os baldes não possuem marcações. Prepare-se.</p>
+    <p>Você tem exatamente <strong>1 minuto e 30 segundos</strong> para deixar o galão de 5 litros com exatamente 4 litros de água.<br>Os baldes não possuem marcações. Prepare-se.</p>
     
     <div id="introCountdown">INÍCIO AUTOMÁTICO EM: 25s</div>
   </div>
@@ -332,25 +335,22 @@
   <footer>BY: Cassiano Vazquez</footer>
 
   <script>
-    // Temporizador da Tela de Instruções
     let introTimeLeft = 25;
     let introTimerInterval = setInterval(() => {
       introTimeLeft--;
-      document.getElementById('introCountdown').innerText = `INÍCIO AUTOMÁTICO EM: ${introTimeLeft}s`;
+      document.getElementById('introCountdown').innerText = "INÍCIO AUTOMÁTICO EM: " + introTimeLeft + "s";
       
       if (introTimeLeft <= 0) {
         beginChallenge();
       }
     }, 1000);
 
-    // Lógica e Memória do Jogo
     let b5 = 0; 
     let b3 = 0; 
     const MAX_B5 = 5;
     const MAX_B3 = 3;
     let gameActive = false;
 
-    // Cronômetro do Jogo Principal (90 segundos = 1m30s)
     let timeLeft = 90;
     let timerInterval = null;
     const timerDisplay = document.getElementById('timer');
@@ -379,7 +379,7 @@
     function updateTimerUI() {
       let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
       let s = (timeLeft % 60).toString().padStart(2, '0');
-      timerDisplay.innerText = `${m}:${s}`;
+      timerDisplay.innerText = m + ":" + s;
     }
 
     function gameOver() {
@@ -395,7 +395,6 @@
       }, 500);
     }
 
-    // Funções dos Botões
     function fill(jug) {
       if (!gameActive) return;
       if (jug === 5 && b5 !== MAX_B5) { 
@@ -424,15 +423,15 @@
       if (!gameActive) return;
       if (fromJug === 5 && toJug === 3) {
         if (b5 === 0 || b3 === MAX_B3) return; 
-        const spaceLeftInB3 = MAX_B3 - b3;
-        const amountToTransfer = Math.min(b5, spaceLeftInB3);
+        let spaceLeftInB3 = MAX_B3 - b3;
+        let amountToTransfer = Math.min(b5, spaceLeftInB3);
         b5 -= amountToTransfer;
         b3 += amountToTransfer;
         updateState();
       } else if (fromJug === 3 && toJug === 5) {
         if (b3 === 0 || b5 === MAX_B5) return;
-        const spaceLeftInB5 = MAX_B5 - b5;
-        const amountToTransfer = Math.min(b3, spaceLeftInB5);
+        let spaceLeftInB5 = MAX_B5 - b5;
+        let amountToTransfer = Math.min(b3, spaceLeftInB5);
         b3 -= amountToTransfer;
         b5 += amountToTransfer;
         updateState();
@@ -440,13 +439,13 @@
     }
 
     function updateState() {
-      const percent5 = (b5 / MAX_B5) * 100;
-      document.getElementById('water-5').style.height = `${percent5}%`;
-      document.getElementById('text-5').innerText = `${b5}L`;
+      let percent5 = (b5 / MAX_B5) * 100;
+      document.getElementById('water-5').style.height = percent5 + "%";
+      document.getElementById('text-5').innerText = b5 + "L";
       
-      const percent3 = (b3 / MAX_B3) * 100;
-      document.getElementById('water-3').style.height = `${percent3}%`;
-      document.getElementById('text-3').innerText = `${b3}L`;
+      let percent3 = (b3 / MAX_B3) * 100;
+      document.getElementById('water-3').style.height = percent3 + "%";
+      document.getElementById('text-3').innerText = b3 + "L";
 
       if (b5 === 4) {
         gameWon();
