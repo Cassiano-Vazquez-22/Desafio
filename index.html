@@ -63,25 +63,16 @@
     /* Layout Principal */
     .main-container {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: row;
       gap: 20px;
       width: 100%;
-      max-width: 1000px;
+      max-width: 800px;
       justify-content: center;
       z-index: 10;
     }
 
-    .game-area {
-      flex: 2;
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      justify-content: center;
-      min-width: 300px;
-    }
-
     /* Painéis Metálicos Estilo Anos 2000 */
-    .jug-container, .history-panel {
+    .jug-container {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -91,10 +82,11 @@
       border-top-color: #777;
       border-left-color: #777;
       box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.8);
+      flex: 1;
+      width: 50%;
     }
 
-    .jug-container { flex: 1; min-width: 260px; max-width: 300px; }
-    .jug-container h2 { margin-bottom: 15px; color:#fff; font-size: 1.2rem; text-transform: uppercase; text-shadow: 1px 1px 0px #000;}
+    .jug-container h2 { margin-bottom: 15px; color:#fff; font-size: 1.2rem; text-transform: uppercase; text-shadow: 1px 1px 0px #000; text-align: center;}
 
     /* Baldes Industriais */
     .jug {
@@ -141,6 +133,7 @@
       text-transform: uppercase;
       font-size: 0.9rem;
       letter-spacing: 1px;
+      line-height: 1.2;
     }
     
     button:active { 
@@ -165,41 +158,6 @@
       color: white; 
       border-color: #ffcc00 #332200 #332200 #ffcc00;
     }
-
-    /* Painel de Histórico (Terminal) */
-    .history-panel { flex: 1; min-width: 280px; max-height: 520px; align-items: stretch;}
-    
-    .history-panel h2 {
-      color: #00ff00;
-      font-size: 1.2rem;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-      border-bottom: 2px dashed #00ff00;
-      padding-bottom: 10px;
-    }
-
-    .history-list {
-      list-style: none;
-      overflow-y: auto;
-      flex-grow: 1;
-      padding: 10px;
-      background: #000;
-      border: 2px inset #444;
-    }
-
-    .history-list li {
-      margin-bottom: 12px;
-      font-size: 0.9rem;
-      color: #00ff00;
-      text-shadow: 0 0 3px #00ff00;
-    }
-
-    .history-list li small { color: #888; text-shadow: none; display: block; margin-top: 2px;}
-
-    .history-list::-webkit-scrollbar { width: 12px; }
-    .history-list::-webkit-scrollbar-track { background: #111; border-left: 1px solid #333;}
-    .history-list::-webkit-scrollbar-thumb { background: #555; border: 1px solid #777;}
 
     /* Telas de Sobreposição */
     .overlay {
@@ -268,17 +226,25 @@
       z-index: 10;
     }
 
-    /* ADAPTAÇÕES PARA CELULAR (Design Responsivo) */
+    /* ADAPTAÇÕES PARA CELULAR (Garante lado a lado) */
     @media (max-width: 768px) {
-      .header h1 { font-size: 1.3rem; }
+      .header h1 { font-size: 1.1rem; margin-top: 10px; }
       
-      .timer-box { padding: 10px 20px; }
+      .timer-box { padding: 10px 20px; margin-bottom: 15px;}
       #timer { font-size: 2.5rem; }
       
-      .game-area { flex-direction: column; min-width: 100%; align-items: center; }
-      .jug-container { min-width: 100%; max-width: 100%; }
-      
-      .history-panel { min-width: 100%; max-height: 350px; margin-top: 10px; }
+      .main-container { gap: 10px; }
+      .jug-container { padding: 10px; }
+      .jug-container h2 { font-size: 0.85rem; }
+
+      /* Reduz o tamanho dos baldes para caberem lado a lado */
+      .jug-5 { width: 80px; height: 160px; }
+      .jug-3 { width: 80px; height: 96px; }
+      .water-text { font-size: 1.1rem; }
+
+      /* Reduz os botões */
+      .controls { gap: 8px; }
+      button { padding: 8px; font-size: 0.65rem; }
       
       .overlay h1 { font-size: 2rem; }
       .overlay p { font-size: 0.95rem; padding: 15px; }
@@ -287,13 +253,13 @@
       
       .btn-reset { font-size: 1rem; padding: 10px 20px; }
       
-      /* Libera o rodapé do absoluto para que ele vá pro fim da página em telas pequenas */
+      /* Solta o rodapé em telas pequenas para não atrapalhar os botões */
       footer {
         position: relative;
         bottom: auto;
         right: auto;
         text-align: center;
-        margin-top: 20px;
+        margin-top: 30px;
         padding-bottom: 20px;
       }
     }
@@ -309,7 +275,7 @@
     </div>
     <p>A bomba está armada na fonte do parque. Você tem exatamente <strong>1 minuto e 30 segundos</strong> para colocar 4 litros de água no galão sobre o sensor.<br>Os baldes não possuem marcações. Prepare-se.</p>
     
-    <div id="introCountdown">INÍCIO AUTOMÁTICO EM: 20s</div>
+    <div id="introCountdown">INÍCIO AUTOMÁTICO EM: 30s</div>
   </div>
     
   <!-- Cabeçalho do Jogo -->
@@ -321,52 +287,45 @@
     <div id="timer">01:30</div>
   </div>
 
+  <!-- Área do Jogo (Baldes lado a lado) -->
   <div class="main-container">
-    <div class="game-area">
-      <!-- Balde 5 Litros -->
-      <div class="jug-container">
-        <h2>Balde 01 [5L]</h2>
-        <div class="jug jug-5">
-          <div class="water" id="water-5" style="height: 0%;">
-            <span class="water-text" id="text-5">0L</span>
-          </div>
-        </div>
-        <div class="controls">
-          <button class="btn-fill" onclick="fill(5)">Encher Balde 5L</button>
-          <button class="btn-transfer" onclick="transfer(5, 3)">Transferir 5L ➔ 3L</button>
-          <button class="btn-empty" onclick="empty(5)">Esvaziar Balde 5L</button>
+    
+    <!-- Balde 5 Litros -->
+    <div class="jug-container">
+      <h2>Balde 01 [5L]</h2>
+      <div class="jug jug-5">
+        <div class="water" id="water-5" style="height: 0%;">
+          <span class="water-text" id="text-5">0L</span>
         </div>
       </div>
-
-      <!-- Balde 3 Litros -->
-      <div class="jug-container">
-        <h2>Balde 02 [3L]</h2>
-        <div class="jug jug-3">
-          <div class="water" id="water-3" style="height: 0%;">
-            <span class="water-text" id="text-3">0L</span>
-          </div>
-        </div>
-        <div class="controls">
-          <button class="btn-fill" onclick="fill(3)">Encher Balde 3L</button>
-          <button class="btn-transfer" onclick="transfer(3, 5)">Transferir 3L ➔ 5L</button>
-          <button class="btn-empty" onclick="empty(3)">Esvaziar Balde 3L</button>
-        </div>
+      <div class="controls">
+        <button class="btn-fill" onclick="fill(5)">Encher Balde 5L</button>
+        <button class="btn-transfer" onclick="transfer(5, 3)">Transferir 5L ➔ 3L</button>
+        <button class="btn-empty" onclick="empty(5)">Esvaziar Balde 5L</button>
       </div>
     </div>
 
-    <!-- Painel Lateral de Histórico -->
-    <div class="history-panel">
-      <h2>LOG DE AÇÕES <span>[<span id="moveCounter">0</span>]</span></h2>
-      <ul class="history-list" id="historyList">
-        <li>Aguardando input do operador...</li>
-      </ul>
+    <!-- Balde 3 Litros -->
+    <div class="jug-container">
+      <h2>Balde 02 [3L]</h2>
+      <div class="jug jug-3">
+        <div class="water" id="water-3" style="height: 0%;">
+          <span class="water-text" id="text-3">0L</span>
+        </div>
+      </div>
+      <div class="controls">
+        <button class="btn-fill" onclick="fill(3)">Encher Balde 3L</button>
+        <button class="btn-transfer" onclick="transfer(3, 5)">Transferir 3L ➔ 5L</button>
+        <button class="btn-empty" onclick="empty(3)">Esvaziar Balde 3L</button>
+      </div>
     </div>
+
   </div>
 
   <!-- Tela de Vitória -->
   <div class="overlay" id="winScreen">
     <h1 style="color: #00ff00; text-shadow: 4px 4px 0px #005500;">BOMBA DESARMADA</h1>
-    <p>Ameaça neutralizada. Você salvou a cidade em <strong id="finalMoves">0</strong> ações. <br><br>Envie o relatório no WhatsApp!</p>
+    <p>Ameaça neutralizada. Você salvou a cidade!<br><br>Envie o relatório (Print) no WhatsApp!</p>
     <button class="btn-reset" onclick="resetGame()">[ NOVA SIMULAÇÃO ]</button>
   </div>
 
@@ -382,7 +341,7 @@
 
   <script>
     // Temporizador da Tela de Instruções
-    let introTimeLeft = 20;
+    let introTimeLeft = 30;
     let introTimerInterval = setInterval(() => {
       introTimeLeft--;
       document.getElementById('introCountdown').innerText = `INÍCIO AUTOMÁTICO EM: ${introTimeLeft}s`;
@@ -398,7 +357,6 @@
     const MAX_B5 = 5;
     const MAX_B3 = 3;
     let gameActive = false;
-    let moves = 0;
 
     // Cronômetro do Jogo Principal (90 segundos = 1m30s)
     let timeLeft = 90;
@@ -409,7 +367,6 @@
       clearInterval(introTimerInterval); // Para o contador de instruções
       document.getElementById('startScreen').style.display = 'none';
       gameActive = true;
-      document.getElementById('historyList').innerHTML = ''; 
       startTimer();
     }
 
@@ -441,24 +398,9 @@
     function gameWon() {
       gameActive = false;
       clearInterval(timerInterval);
-      document.getElementById('finalMoves').innerText = moves;
       setTimeout(() => {
         document.getElementById('winScreen').style.display = 'flex';
       }, 500);
-    }
-
-    // Sistema de Log de Ações
-    const historyList = document.getElementById('historyList');
-    const moveCounter = document.getElementById('moveCounter');
-
-    function logAction(actionText) {
-      moves++;
-      moveCounter.innerText = moves;
-      
-      const li = document.createElement('li');
-      li.innerHTML = `> [ACAO_${moves}] ${actionText}<br><small>MEMORIA: B01[${b5}L] B02[${b3}L]</small>`;
-      
-      historyList.prepend(li);
     }
 
     // Funções dos Botões
@@ -466,12 +408,10 @@
       if (!gameActive) return;
       if (jug === 5 && b5 !== MAX_B5) { 
         b5 = MAX_B5; 
-        logAction("Encheu Balde 01");
         updateState(); 
       } 
       else if (jug === 3 && b3 !== MAX_B3) { 
         b3 = MAX_B3; 
-        logAction("Encheu Balde 02");
         updateState(); 
       }
     }
@@ -480,12 +420,10 @@
       if (!gameActive) return;
       if (jug === 5 && b5 !== 0) { 
         b5 = 0; 
-        logAction("Esvaziou Balde 01");
         updateState(); 
       } 
       else if (jug === 3 && b3 !== 0) { 
         b3 = 0; 
-        logAction("Esvaziou Balde 02");
         updateState(); 
       }
     }
@@ -498,7 +436,6 @@
         const amountToTransfer = Math.min(b5, spaceLeftInB3);
         b5 -= amountToTransfer;
         b3 += amountToTransfer;
-        logAction(`Transferiu ${amountToTransfer}L [01 -> 02]`);
         updateState();
       } else if (fromJug === 3 && toJug === 5) {
         if (b3 === 0 || b5 === MAX_B5) return;
@@ -506,7 +443,6 @@
         const amountToTransfer = Math.min(b3, spaceLeftInB5);
         b3 -= amountToTransfer;
         b5 += amountToTransfer;
-        logAction(`Transferiu ${amountToTransfer}L [02 -> 01]`);
         updateState();
       }
     }
@@ -521,7 +457,6 @@
       document.getElementById('text-3').innerText = `${b3}L`;
 
       if (b5 === 4) {
-        logAction("CONDICAO VITORIA ATINGIDA");
         gameWon();
       }
     }
@@ -529,16 +464,12 @@
     function resetGame() {
       b5 = 0; b3 = 0;
       timeLeft = 90; 
-      moves = 0;
       gameActive = true;
       
       document.getElementById('water-5').style.height = '0%'; 
       document.getElementById('text-5').innerText = '0L';
       document.getElementById('water-3').style.height = '0%'; 
       document.getElementById('text-3').innerText = '0L';
-      
-      moveCounter.innerText = '0';
-      historyList.innerHTML = '';
 
       document.getElementById('winScreen').style.display = 'none';
       document.getElementById('failScreen').style.display = 'none';
