@@ -4,41 +4,63 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Desafio: Duro de Matar 3</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Share Tech Mono', monospace; }
     
     body {
-      background: #0f172a;
-      color: #f8fafc;
+      background-color: #111;
+      background-image: 
+        linear-gradient(rgba(0, 255, 0, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 0, 0.03) 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: #e0e0e0;
       display: flex;
       flex-direction: column;
       align-items: center;
       min-height: 100vh;
       padding: 15px;
+      position: relative;
     }
 
-    .header { text-align: center; margin-bottom: 20px; width: 100%; max-width: 650px; margin-top: 10px; }
-    .header h1 { color: #facc15; font-size: 2.2rem; margin-bottom: 10px; text-transform: uppercase;}
+    /* Efeito Scanlines (Monitor antigo) */
+    body::after {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15), rgba(0,0,0,0.15) 1px, transparent 1px, transparent 2px);
+      pointer-events: none;
+      z-index: 999;
+    }
 
-    /* Cronômetro Digital */
+    .header { text-align: center; margin-bottom: 20px; width: 100%; max-width: 650px; margin-top: 10px; z-index: 10;}
+    .header h1 { 
+      color: #ffcc00; 
+      font-size: 2.5rem; 
+      margin-bottom: 10px; 
+      text-transform: uppercase;
+      text-shadow: 2px 2px 0px #aa0000;
+      letter-spacing: 2px;
+    }
+
+    /* Cronômetro Estilo Bomba */
     .timer-box {
       background: #000;
-      border: 3px solid #334155;
-      border-radius: 8px;
-      padding: 10px 30px;
+      border: 4px inset #444;
+      padding: 10px 40px;
       margin-bottom: 20px;
-      box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.4) inset;
+      z-index: 10;
     }
     
     #timer {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 3.5rem;
-      color: #10b981;
-      text-shadow: 0 0 10px currentColor;
+      font-size: 4rem;
+      color: #ff3333;
+      text-shadow: 0 0 8px #ff0000;
+      letter-spacing: 5px;
     }
 
-    /* Layout Principal: Jogo + Histórico */
+    /* Layout Principal */
     .main-container {
       display: flex;
       flex-wrap: wrap;
@@ -46,6 +68,7 @@
       width: 100%;
       max-width: 1000px;
       justify-content: center;
+      z-index: 10;
     }
 
     .game-area {
@@ -57,32 +80,33 @@
       min-width: 300px;
     }
 
-    .jug-container {
+    /* Painéis Metálicos Estilo Anos 2000 */
+    .jug-container, .history-panel {
       display: flex;
       flex-direction: column;
       align-items: center;
-      background: #1e293b;
+      background: linear-gradient(135deg, #333 0%, #1a1a1a 100%);
       padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-      flex: 1;
-      min-width: 260px;
-      max-width: 300px;
+      border: 2px solid #555;
+      border-top-color: #777;
+      border-left-color: #777;
+      box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.8); /* Sombra dura, sem blur */
     }
 
-    .jug-container h2 { margin-bottom: 15px; color:#cbd5e1; font-size: 1.2rem; text-align: center; }
+    .jug-container { flex: 1; min-width: 260px; max-width: 300px; }
+    .jug-container h2 { margin-bottom: 15px; color:#fff; font-size: 1.2rem; text-transform: uppercase; text-shadow: 1px 1px 0px #000;}
 
-    /* Baldes */
+    /* Baldes Industriais */
     .jug {
       position: relative;
-      border: 4px solid #cbd5e1;
+      border: 4px solid #888;
       border-top: none;
-      border-radius: 0 0 12px 12px;
-      background: rgba(255, 255, 255, 0.05);
+      background: #000;
       overflow: hidden;
       display: flex;
       align-items: flex-end;
       margin-bottom: 20px;
+      box-shadow: inset 0px -10px 20px rgba(255,255,255,0.1);
     }
 
     .jug-5 { width: 130px; height: 260px; }
@@ -90,8 +114,9 @@
 
     .water {
       width: 100%;
-      background: linear-gradient(180deg, #38bdf8 0%, #0369a1 100%);
-      transition: height 0.3s ease-in-out;
+      background: linear-gradient(180deg, #00aaff 0%, #004488 100%);
+      border-top: 2px solid #55ccff;
+      transition: height 0.3s linear;
       display: flex;
       align-items: flex-start;
       justify-content: center;
@@ -100,55 +125,57 @@
 
     .water-text {
       color: white;
-      font-weight: 900;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-      font-size: 1.3rem;
+      font-weight: bold;
+      text-shadow: 2px 2px 0px #000;
+      font-size: 1.5rem;
     }
 
-    /* Botões */
-    .controls { display: grid; grid-template-columns: 1fr; gap: 8px; width: 100%; }
+    /* Botões Físicos (Chanfrados) */
+    .controls { display: grid; grid-template-columns: 1fr; gap: 10px; width: 100%; }
     
     button {
-      padding: 10px;
-      border: none;
-      border-radius: 8px;
-      font-weight: 700;
+      padding: 12px;
+      border: 2px solid;
+      font-weight: bold;
       cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
+      text-transform: uppercase;
       font-size: 0.9rem;
+      letter-spacing: 1px;
     }
     
-    button:active { transform: scale(0.96); }
+    button:active { 
+      border-style: inset;
+      padding: 13px 11px 11px 13px; /* Simula o botão afundando */
+    }
     
-    .btn-fill { background: #0284c7; color: white; }
-    .btn-fill:hover { background: #0369a1; }
+    .btn-fill { 
+      background: linear-gradient(180deg, #0066cc, #003366); 
+      color: white; 
+      border-color: #0099ff #002244 #002244 #0099ff;
+    }
     
-    .btn-empty { background: #ef4444; color: white; }
-    .btn-empty:hover { background: #dc2626; }
+    .btn-empty { 
+      background: linear-gradient(180deg, #cc0000, #660000); 
+      color: white; 
+      border-color: #ff3333 #330000 #330000 #ff3333;
+    }
     
-    .btn-transfer { background: #8b5cf6; color: white; }
-    .btn-transfer:hover { background: #7c3aed; }
-
-    /* Painel de Histórico */
-    .history-panel {
-      flex: 1;
-      min-width: 280px;
-      background: #1e293b;
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-      display: flex;
-      flex-direction: column;
-      max-height: 520px;
+    .btn-transfer { 
+      background: linear-gradient(180deg, #aa8800, #554400); 
+      color: white; 
+      border-color: #ffcc00 #332200 #332200 #ffcc00;
     }
 
+    /* Painel de Histórico (Terminal de Hacker) */
+    .history-panel { flex: 1; min-width: 280px; max-height: 520px; align-items: stretch;}
+    
     .history-panel h2 {
-      color: #facc15;
+      color: #00ff00;
       font-size: 1.2rem;
-      margin-bottom: 5px;
+      margin-bottom: 10px;
       display: flex;
       justify-content: space-between;
-      border-bottom: 2px solid #334155;
+      border-bottom: 2px dashed #00ff00;
       padding-bottom: 10px;
     }
 
@@ -156,83 +183,93 @@
       list-style: none;
       overflow-y: auto;
       flex-grow: 1;
-      padding-right: 5px;
-      margin-top: 10px;
+      padding: 10px;
+      background: #000;
+      border: 2px inset #444;
     }
 
     .history-list li {
-      background: #334155;
-      padding: 10px;
-      margin-bottom: 8px;
-      border-radius: 6px;
-      font-size: 0.85rem;
-      color: #cbd5e1;
-      border-left: 4px solid #38bdf8;
-      animation: fadeIn 0.3s ease;
+      margin-bottom: 12px;
+      font-size: 0.9rem;
+      color: #00ff00;
+      text-shadow: 0 0 3px #00ff00;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateX(-10px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
+    .history-list li small { color: #888; text-shadow: none; display: block; margin-top: 2px;}
 
-    /* Scrollbar customizada para o histórico */
-    .history-list::-webkit-scrollbar { width: 6px; }
-    .history-list::-webkit-scrollbar-track { background: #1e293b; }
-    .history-list::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+    .history-list::-webkit-scrollbar { width: 12px; }
+    .history-list::-webkit-scrollbar-track { background: #111; border-left: 1px solid #333;}
+    .history-list::-webkit-scrollbar-thumb { background: #555; border: 1px solid #777;}
 
-    /* Modais & Telas de Sobreposição */
+    /* Telas de Sobreposição (Avisos Críticos) */
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.92);
+      background: rgba(0,0,0,0.85);
       display: none;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      z-index: 50;
+      z-index: 1000;
       text-align: center;
       padding: 20px;
     }
 
     #startScreen { display: flex; }
 
-    .overlay h1 { font-size: 2.5rem; margin-bottom: 10px; color: #facc15; text-transform: uppercase; }
-    .overlay p { font-size: 1.1rem; color: #cbd5e1; max-width: 500px; margin-bottom: 25px; line-height: 1.5; }
-    
-    .whatsapp-box {
-      background: #064e3b;
-      border: 2px solid #10b981;
-      padding: 15px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      max-width: 500px;
+    .overlay h1 { 
+      font-size: 3rem; 
+      margin-bottom: 15px; 
+      color: #ffcc00; 
+      text-transform: uppercase; 
+      text-shadow: 4px 4px 0px #aa0000;
     }
     
-    .whatsapp-box p { color: #ecfdf5; font-size: 1rem; font-weight: 700; line-height: 1.4; margin: 0; }
+    .overlay p { font-size: 1.2rem; color: #fff; max-width: 600px; margin-bottom: 25px; line-height: 1.5; background: #000; padding: 20px; border: 2px solid #555; }
+    
+    /* Caixa de Transmissão / Missão */
+    .whatsapp-box {
+      background: #002200;
+      border: 2px solid #00ff00;
+      padding: 15px;
+      margin-bottom: 20px;
+      max-width: 600px;
+      box-shadow: 0 0 10px #00ff00 inset;
+    }
+    
+    .whatsapp-box p { color: #00ff00; border: none; background: transparent; padding: 0; text-shadow: 0 0 3px #00ff00; margin: 0; font-size: 1.1rem;}
 
-    .btn-main { background: #10b981; color: white; padding: 15px 40px; font-size: 1.3rem; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); }
-    .btn-main:hover { background: #059669; }
+    .btn-main { 
+      background: #aa0000; 
+      color: white; 
+      padding: 15px 40px; 
+      font-size: 1.5rem; 
+      border: 3px solid #ff3333;
+      border-right-color: #440000;
+      border-bottom-color: #440000;
+    }
+    .btn-main:hover { background: #cc0000; }
+    .btn-main:active { padding: 18px 37px 12px 43px; border-color: #440000 #ff3333 #ff3333 #440000; }
 
-    .btn-reset { background: #facc15; color: #000; padding: 15px 30px; font-size: 1.2rem; }
-    .btn-reset:hover { background: #eab308; }
+    .btn-reset { background: #ffaa00; color: #000; padding: 15px 30px; font-size: 1.2rem; border: 3px solid #ffeeaa; border-right-color:#885500; border-bottom-color:#885500;}
+    .btn-reset:hover { background: #ffcc00; }
   </style>
 </head>
 <body>
 
   <!-- Tela de Início -->
   <div class="overlay" id="startScreen">
-    <h1>Duro de Matar 3</h1>
+    <h1>Transmissão Recebida</h1>
     <div class="whatsapp-box">
-      <p>🚨 ESTOU FAZENDO ESTE DESAFIO PARA UM PROJETO! 🚨<br><br>Tente desarmar a bomba colocando exatamente 4 Litros no Balde de 5L. Se você conseguir, TIRE UM PRINT DA TELA me mande </p>
+      <p>> ALERTA DE MISSÃO: PROJETO EM ANDAMENTO <br><br>> Desarme a bomba isolando exatamente 4 Litros no Balde de 5L. <br>> OBJETIVO SECUNDÁRIO: Tire um PRINT da tela de vitória e envie no WhatsApp para confirmação visual de sucesso!</p>
     </div>
-    <p>A bomba está armada na fonte. Você tem exatamente <strong>2 minutos</strong> para colocar 4 litros exatos de água no galão sobre o sensor. Pense rápido!</p>
-    <button class="btn-main" onclick="beginChallenge()">INICIAR O DESAFIO</button>
+    <p>A bomba está armada na fonte do parque. Você tem exatamente <strong>2 minutos</strong> para colocar 4 litros de água no galão sobre o sensor.<br>Não há medições. Apenas lógica bruta. O tempo está correndo.</p>
+    <button class="btn-main" onclick="beginChallenge()">[ INICIAR DESARME ]</button>
   </div>
 
   <!-- Cabeçalho do Jogo -->
   <div class="header">
-    <h1>Desarme a Bomba</h1>
+    <h1>Duro de Matar 3</h1>
   </div>
 
   <div class="timer-box">
@@ -243,7 +280,7 @@
     <div class="game-area">
       <!-- Balde 5 Litros -->
       <div class="jug-container">
-        <h2>Balde de 5 Litros</h2>
+        <h2>Balde 01 [5L]</h2>
         <div class="jug jug-5">
           <div class="water" id="water-5" style="height: 0%;">
             <span class="water-text" id="text-5">0L</span>
@@ -258,7 +295,7 @@
 
       <!-- Balde 3 Litros -->
       <div class="jug-container">
-        <h2>Balde de 3 Litros</h2>
+        <h2>Balde 02 [3L]</h2>
         <div class="jug jug-3">
           <div class="water" id="water-3" style="height: 0%;">
             <span class="water-text" id="text-3">0L</span>
@@ -274,25 +311,25 @@
 
     <!-- Painel Lateral de Histórico -->
     <div class="history-panel">
-      <h2>Ações <span id="moveCounter">0</span></h2>
+      <h2>LOG DE AÇÕES <span>[<span id="moveCounter">0</span>]</span></h2>
       <ul class="history-list" id="historyList">
-        <!-- O histórico aparecerá aqui -->
+        <li>Aguardando input do operador...</li>
       </ul>
     </div>
   </div>
 
   <!-- Tela de Vitória -->
   <div class="overlay" id="winScreen">
-    <h1 style="color: #10b981;">BOMBA DESARMADA!</h1>
-    <p>Deu boa, tu não explodiu a cidade</p>
-    <button class="btn-reset" onclick="resetGame()">Jogar Novamente</button>
+    <h1 style="color: #00ff00; text-shadow: 4px 4px 0px #005500;">BOMBA DESARMADA</h1>
+    <p>Ameaça neutralizada. Lógica executada com sucesso em <strong id="finalMoves">0</strong> ações. <br><br>Grave o registro visual (PRINT) e envie o relatório no WhatsApp!</p>
+    <button class="btn-reset" onclick="resetGame()">[ NOVA SIMULAÇÃO ]</button>
   </div>
 
   <!-- Tela de Derrota -->
   <div class="overlay" id="failScreen">
-    <h1 style="color: #ef4444;">BOOM!</h1>
-    <p>Bah, tu explodiu a cidade</p>
-    <button class="btn-reset" onclick="resetGame()">Quero tentar mais uma vez!</button>
+    <h1 style="color: #ff0000;">BOOM!</h1>
+    <p>Falha crítica no sistema. O tempo expirou e a bomba foi detonada. A cidade foi destruída.</p>
+    <button class="btn-reset" onclick="resetGame()">[ TENTAR NOVAMENTE ]</button>
   </div>
 
   <script>
@@ -312,6 +349,7 @@
     function beginChallenge() {
       document.getElementById('startScreen').style.display = 'none';
       gameActive = true;
+      document.getElementById('historyList').innerHTML = ''; // Limpa o "Aguardando input..."
       startTimer();
     }
 
@@ -333,12 +371,6 @@
       let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
       let s = (timeLeft % 60).toString().padStart(2, '0');
       timerDisplay.innerText = `${m}:${s}`;
-
-      if (timeLeft <= 30) {
-        timerDisplay.style.color = '#ef4444';
-      } else {
-        timerDisplay.style.color = '#10b981';
-      }
     }
 
     function gameOver() {
@@ -364,9 +396,8 @@
       moveCounter.innerText = moves;
       
       const li = document.createElement('li');
-      li.innerHTML = `<strong>#${moves}</strong> - ${actionText}<br><small style="color: #94a3b8;">Status: B5=(${b5}L) | B3=(${b3}L)</small>`;
+      li.innerHTML = `> [ACAO_${moves}] ${actionText}<br><small>MEMORIA: B01[${b5}L] B02[${b3}L]</small>`;
       
-      // Coloca a ação mais recente no topo da lista
       historyList.prepend(li);
     }
 
@@ -375,12 +406,12 @@
       if (!gameActive) return;
       if (jug === 5 && b5 !== MAX_B5) { 
         b5 = MAX_B5; 
-        logAction("Encheu o Balde de 5 Litros");
+        logAction("Encheu Balde 01");
         updateState(); 
       } 
       else if (jug === 3 && b3 !== MAX_B3) { 
         b3 = MAX_B3; 
-        logAction("Encheu o Balde de 3 Litros");
+        logAction("Encheu Balde 02");
         updateState(); 
       }
     }
@@ -389,12 +420,12 @@
       if (!gameActive) return;
       if (jug === 5 && b5 !== 0) { 
         b5 = 0; 
-        logAction("Esvaziou o Balde de 5 Litros");
+        logAction("Esvaziou Balde 01");
         updateState(); 
       } 
       else if (jug === 3 && b3 !== 0) { 
         b3 = 0; 
-        logAction("Esvaziou o Balde de 3 Litros");
+        logAction("Esvaziou Balde 02");
         updateState(); 
       }
     }
@@ -407,7 +438,7 @@
         const amountToTransfer = Math.min(b5, spaceLeftInB3);
         b5 -= amountToTransfer;
         b3 += amountToTransfer;
-        logAction(`Transferiu ${amountToTransfer}L do Balde 5L para o Balde 3L`);
+        logAction(`Transferiu ${amountToTransfer}L [01 -> 02]`);
         updateState();
       } else if (fromJug === 3 && toJug === 5) {
         if (b3 === 0 || b5 === MAX_B5) return;
@@ -415,7 +446,7 @@
         const amountToTransfer = Math.min(b3, spaceLeftInB5);
         b3 -= amountToTransfer;
         b5 += amountToTransfer;
-        logAction(`Transferiu ${amountToTransfer}L do Balde 3L para o Balde 5L`);
+        logAction(`Transferiu ${amountToTransfer}L [02 -> 01]`);
         updateState();
       }
     }
@@ -430,7 +461,7 @@
       document.getElementById('text-3').innerText = `${b3}L`;
 
       if (b5 === 4) {
-        logAction("Bomba Desarmada com Sucesso!");
+        logAction("CONDICAO VITORIA ATINGIDA");
         gameWon();
       }
     }
@@ -447,7 +478,7 @@
       document.getElementById('text-3').innerText = '0L';
       
       moveCounter.innerText = '0';
-      historyList.innerHTML = ''; // Limpa o histórico
+      historyList.innerHTML = '';
 
       document.getElementById('winScreen').style.display = 'none';
       document.getElementById('failScreen').style.display = 'none';
