@@ -224,10 +224,10 @@
   <div class="overlay" id="startScreen">
     <h1>Duro de Matar 3</h1>
     <div class="whatsapp-box">
-      <p>🚨 ESTOU FAZENDO ESTE DESAFIO PARA UM PROJETO! 🚨<br><br>Tente desarmar a bomba colocando exatamente 4 Litros no Balde de 5L. Se você conseguir, TIRE UM PRINT DA TELA DE VITÓRIA e me mande</p>
+      <p>🚨 ESTOU FAZENDO ESTE DESAFIO PARA UM PROJETO! 🚨<br><br>Tente desarmar a bomba colocando exatamente 4 Litros no Balde de 5L. Se você conseguir, TIRE UM PRINT DA TELA me mande </p>
     </div>
-    <p>há uma bomba armada no parque! Para desativar o detonador, você precisa colocar exatamente 4 Litros de água no balde maior (5L). O problema? Você só tem dois baldes sem marcação de medidas: um de 5 Litros e um de 3 Litros.para colocar 4 litros exatos de água no galão sobre o sensor. Pense rápido!</p>
-   As Regras: Você só pode encher os baldes até a borda, esvaziá-los completamente ou transferir a água de um para o outro. Nada de 'chutar' a medida, o sensor é implacável! Você tem 2 minutos. Pense rápido! <button class="btn-main" onclick="beginChallenge()">INICIAR O DESAFIO</button>
+    <p>A bomba está armada na fonte. Você tem exatamente <strong>2 minutos</strong> para colocar 4 litros exatos de água no galão sobre o sensor. Pense rápido!</p>
+    <button class="btn-main" onclick="beginChallenge()">INICIAR O DESAFIO</button>
   </div>
 
   <!-- Cabeçalho do Jogo -->
@@ -284,15 +284,15 @@
   <!-- Tela de Vitória -->
   <div class="overlay" id="winScreen">
     <h1 style="color: #10b981;">BOMBA DESARMADA!</h1>
-    <p>Incrível! Você acertou a lógica em <strong id="finalMoves">0</strong> ações! Tire o print desta tela e me mande lá no WhatsApp agora mesmo! 📸</p>
+    <p>Deu boa, tu não explodiu a cidade</p>
     <button class="btn-reset" onclick="resetGame()">Jogar Novamente</button>
   </div>
 
   <!-- Tela de Derrota -->
   <div class="overlay" id="failScreen">
-    <h1 style="color: #ef4444;">BOOM! 💥</h1>
-    <p>O tempo acabou e a bomba explodiu! A lógica não foi rápida o suficiente.</p>
-    <button class="btn-reset" onclick="resetGame()">Tentar de Novo</button>
+    <h1 style="color: #ef4444;">BOOM!</h1>
+    <p>Bah, tu explodiu a cidade</p>
+    <button class="btn-reset" onclick="resetGame()">Quero tentar mais uma vez!</button>
   </div>
 
   <script>
