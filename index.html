@@ -36,7 +36,7 @@
     .header { text-align: center; margin-bottom: 20px; width: 100%; max-width: 650px; margin-top: 10px; z-index: 10;}
     .header h1 { 
       color: #ffcc00; 
-      font-size: 2.5rem; 
+      font-size: 2rem; 
       margin-bottom: 10px; 
       text-transform: uppercase;
       text-shadow: 2px 2px 0px #aa0000;
@@ -256,17 +256,46 @@
       50% { opacity: 0.5; }
     }
 
-    /* Rodapé */
+    /* Rodapé (Assinatura) */
     footer {
-      margin-top: auto;
-      padding: 20px;
+      position: absolute;
+      bottom: 15px;
+      right: 20px;
       color: #00ff00;
-      font-size: 1rem;
+      font-size: 0.9rem;
       text-shadow: 0 0 5px #00ff00;
       letter-spacing: 2px;
-      text-align: center;
-      width: 100%;
       z-index: 10;
+    }
+
+    /* ADAPTAÇÕES PARA CELULAR (Design Responsivo) */
+    @media (max-width: 768px) {
+      .header h1 { font-size: 1.3rem; }
+      
+      .timer-box { padding: 10px 20px; }
+      #timer { font-size: 2.5rem; }
+      
+      .game-area { flex-direction: column; min-width: 100%; align-items: center; }
+      .jug-container { min-width: 100%; max-width: 100%; }
+      
+      .history-panel { min-width: 100%; max-height: 350px; margin-top: 10px; }
+      
+      .overlay h1 { font-size: 2rem; }
+      .overlay p { font-size: 0.95rem; padding: 15px; }
+      .whatsapp-box p { font-size: 0.95rem; }
+      #introCountdown { font-size: 1.5rem; }
+      
+      .btn-reset { font-size: 1rem; padding: 10px 20px; }
+      
+      /* Libera o rodapé do absoluto para que ele vá pro fim da página em telas pequenas */
+      footer {
+        position: relative;
+        bottom: auto;
+        right: auto;
+        text-align: center;
+        margin-top: 20px;
+        padding-bottom: 20px;
+      }
     }
   </style>
 </head>
@@ -276,18 +305,16 @@
   <div class="overlay" id="startScreen">
     <h1>Transmissão Recebida</h1>
     <div class="whatsapp-box">
-      <p>> ALERTA DE MISSÃO: NÂO TENTE FUGIR! <br><br>> Desarme a bomba isolando exatamente 4 Litros no Balde de 5L. <br>> Se conseguir, tire um print da tela e me mande</p>
+      <p>> ALERTA DE MISSÃO: NÃO TENTE FUGIR! <br><br>> Desarme a bomba isolando exatamente 4 Litros no Balde de 5L. <br>> Se conseguir, tire um print da tela e me mande</p>
     </div>
-    <p>A bomba está armada na fonte do parque. Você tem exatamente <strong>1 minuto e 30 segundos</strong> para colocar 4 litros de água no galão sobre o sensor.<br>Não há medições.Prepare-se.</p>
+    <p>A bomba está armada na fonte do parque. Você tem exatamente <strong>1 minuto e 30 segundos</strong> para colocar 4 litros de água no galão sobre o sensor.<br>Os baldes não possuem marcações. Prepare-se.</p>
     
     <div id="introCountdown">INÍCIO AUTOMÁTICO EM: 30s</div>
   </div>
-
-
-   
+    
   <!-- Cabeçalho do Jogo -->
   <div class="header">
-    <h1>Desarme a Bomba deixando apenas 4 litros de aguá no Balde com capacidade para 5 litros</h1>
+    <h1>Desarme a Bomba deixando apenas 4 litros de água no Balde com capacidade para 5 litros</h1>
   </div>
 
   <div class="timer-box">
@@ -339,14 +366,14 @@
   <!-- Tela de Vitória -->
   <div class="overlay" id="winScreen">
     <h1 style="color: #00ff00; text-shadow: 4px 4px 0px #005500;">BOMBA DESARMADA</h1>
-    <p>Ameaça neutralizada. Você salvou a cidade<strong id="finalMoves">0</strong> ações. <br><br>Envie o relatório no WhatsApp!</p>
+    <p>Ameaça neutralizada. Você salvou a cidade em <strong id="finalMoves">0</strong> ações. <br><br>Envie o relatório no WhatsApp!</p>
     <button class="btn-reset" onclick="resetGame()">[ NOVA SIMULAÇÃO ]</button>
   </div>
 
   <!-- Tela de Derrota -->
   <div class="overlay" id="failScreen">
     <h1 style="color: #ff0000;">BOOM!</h1>
-    <p>Falha crítica no sistema. Voçê EXPLODIU junto com a cidade.</p>
+    <p>Falha crítica no sistema. Você EXPLODIU junto com a cidade.</p>
     <button class="btn-reset" onclick="resetGame()">[ TENTAR NOVAMENTE ]</button>
   </div>
 
@@ -501,7 +528,7 @@
 
     function resetGame() {
       b5 = 0; b3 = 0;
-      timeLeft = 90; // Reseta para 90 segundos também
+      timeLeft = 90; 
       moves = 0;
       gameActive = true;
       
