@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Desafio Lógico: O Enigma dos Baldes</title>
+  <title>Desafio: O Mestre dos Sucos</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', sans-serif; }
     
     body {
-      background: #0f172a;
+      background: #1e1b4b; /* Fundo mais místico/escuro */
       color: #f8fafc;
       display: flex;
       flex-direction: column;
@@ -19,8 +19,8 @@
     }
 
     .header { text-align: center; margin-bottom: 30px; }
-    .header h1 { color: #38bdf8; font-size: 2.2rem; }
-    .header p { color: #94a3b8; max-width: 600px; margin-top: 10px; }
+    .header h1 { color: #f59e0b; font-size: 2.2rem; text-shadow: 0 2px 4px rgba(245, 158, 11, 0.4); }
+    .header p { color: #cbd5e1; max-width: 650px; margin-top: 10px; line-height: 1.6; font-size: 1.05rem; }
 
     .game-area {
       display: flex;
@@ -34,18 +34,19 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      background: #1e293b;
+      background: #312e81;
       padding: 20px;
       border-radius: 16px;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+      border: 1px solid #4338ca;
     }
 
-    /* Desenho dos Baldes */
+    /* Desenho dos Baldes / Frascos */
     .jug {
       position: relative;
-      border: 4px solid #cbd5e1;
+      border: 4px solid #94a3b8;
       border-top: none;
-      border-radius: 0 0 12px 12px;
+      border-radius: 0 0 16px 16px;
       background: rgba(255, 255, 255, 0.05);
       overflow: hidden;
       display: flex;
@@ -56,9 +57,11 @@
     .jug-5 { width: 120px; height: 250px; }
     .jug-3 { width: 120px; height: 150px; }
 
-    .water {
+    /* Líquido Lendário */
+    .juice {
       width: 100%;
-      background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
+      background: linear-gradient(180deg, #fbbf24 0%, #ea580c 100%);
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.6) inset;
       transition: height 0.4s ease-in-out;
       display: flex;
       align-items: flex-start;
@@ -69,7 +72,7 @@
     .water-text {
       color: white;
       font-weight: 900;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
       font-size: 1.2rem;
     }
 
@@ -91,30 +94,31 @@
     .btn-fill:hover { background: #059669; }
     .btn-empty { background: #ef4444; color: white; }
     .btn-empty:hover { background: #dc2626; }
-    .btn-transfer { background: #f59e0b; color: white; }
-    .btn-transfer:hover { background: #d97706; }
+    .btn-transfer { background: #8b5cf6; color: white; }
+    .btn-transfer:hover { background: #7c3aed; }
 
-    /* Tabela de Log (Inspirada na imagem) */
+    /* Tabela de Log */
     .log-container {
       width: 100%;
-      max-width: 700px;
-      background: #1e293b;
+      max-width: 750px;
+      background: #312e81;
       border-radius: 12px;
       padding: 20px;
-      margin-top: 20px;
+      margin-top: 10px;
+      border: 1px solid #4338ca;
     }
 
-    .log-container h2 { margin-bottom: 15px; font-size: 1.2rem; border-bottom: 1px solid #334155; padding-bottom: 10px;}
+    .log-container h2 { margin-bottom: 15px; font-size: 1.2rem; border-bottom: 1px solid #4338ca; padding-bottom: 10px; color: #f59e0b;}
 
-    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;}
-    th, td { padding: 10px; border-bottom: 1px solid #334155; }
-    th { color: #38bdf8; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;}
+    th, td { padding: 12px; border-bottom: 1px solid #4338ca; }
+    th { color: #a78bfa; font-weight: 900; }
 
     /* Modal de Vitória */
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.9);
+      background: rgba(15, 23, 42, 0.95);
       display: none;
       flex-direction: column;
       align-items: center;
@@ -124,65 +128,66 @@
       padding: 20px;
     }
 
-    .overlay h1 { color: #10b981; font-size: 3rem; margin-bottom: 10px; }
-    .overlay button { background: #38bdf8; color: #0f172a; padding: 15px 30px; font-size: 1.2rem; margin-top: 20px;}
-    .overlay button:hover { background: #0284c7; color: white; }
+    .overlay h1 { color: #f59e0b; font-size: 3rem; margin-bottom: 15px; text-shadow: 0 0 20px rgba(245, 158, 11, 0.6); }
+    .overlay button { background: #f59e0b; color: #1e1b4b; padding: 15px 30px; font-size: 1.2rem; margin-top: 25px; font-weight: 900;}
+    .overlay button:hover { background: #fbbf24; }
   </style>
 </head>
 <body>
 
   <div class="header">
-    <h1>O Enigma dos Baldes</h1>
-    <p><strong>Objetivo:</strong> Isole exatamente <strong>4 Litros</strong> no Balde de 5 Litros utilizando o fluxo sequencial correto de operações.</p>
+    <h1>O Desafio do Mestre dos Sucos</h1>
+    <p>O desafio não é sobre medir volumes, mas sobre provar a sua capacidade de pensar em termos de <strong>Lógica Sequencial</strong>. O <em>Extrato Concentrado Lendário</em> é o nosso resultado (output), e os baldes são nossas <strong>Variáveis de Memória (B3 e B5)</strong>.</p>
+    <p style="color: #10b981; font-weight: bold; margin-top: 10px;">Objetivo: Isole exatamente 4 Litros na Variável B5.</p>
   </div>
 
   <div class="game-area">
-    <!-- Balde 5 Litros -->
+    <!-- Variável B5 -->
     <div class="jug-container">
-      <h2 style="margin-bottom: 10px; color:#cbd5e1;">Balde 5L (B5)</h2>
+      <h2 style="margin-bottom: 10px; color:#e0e7ff;">Variável B5 (5L)</h2>
       <div class="jug jug-5">
-        <div class="water" id="water-5" style="height: 0%;">
+        <div class="juice" id="juice-5" style="height: 0%;">
           <span class="water-text" id="text-5">0L</span>
         </div>
       </div>
       <div class="controls">
-        <button class="btn-fill" onclick="fill(5)">Encher B5</button>
-        <button class="btn-transfer" onclick="transfer(5, 3)">Despejar B5 ➔ B3</button>
-        <button class="btn-empty" onclick="empty(5)">Esvaziar B5</button>
+        <button class="btn-fill" onclick="fill(5)">Preencher B5</button>
+        <button class="btn-transfer" onclick="transfer(5, 3)">Transferir B5 ➔ B3</button>
+        <button class="btn-empty" onclick="empty(5)">Limpar Memória (B5)</button>
       </div>
     </div>
 
-    <!-- Balde 3 Litros -->
+    <!-- Variável B3 -->
     <div class="jug-container">
-      <h2 style="margin-bottom: 10px; color:#cbd5e1;">Balde 3L (B3)</h2>
+      <h2 style="margin-bottom: 10px; color:#e0e7ff;">Variável B3 (3L)</h2>
       <div class="jug jug-3">
-        <div class="water" id="water-3" style="height: 0%;">
+        <div class="juice" id="juice-3" style="height: 0%;">
           <span class="water-text" id="text-3">0L</span>
         </div>
       </div>
       <div class="controls">
-        <button class="btn-fill" onclick="fill(3)">Encher B3</button>
-        <button class="btn-transfer" onclick="transfer(3, 5)">Despejar B3 ➔ B5</button>
-        <button class="btn-empty" onclick="empty(3)">Esvaziar B3</button>
+        <button class="btn-fill" onclick="fill(3)">Preencher B3</button>
+        <button class="btn-transfer" onclick="transfer(3, 5)">Transferir B3 ➔ B5</button>
+        <button class="btn-empty" onclick="empty(3)">Limpar Memória (B3)</button>
       </div>
     </div>
   </div>
 
   <div class="log-container">
-    <h2>Histórico de Execução Lógica</h2>
+    <h2>Histórico do Fluxo Sequencial</h2>
     <table>
       <thead>
         <tr>
           <th>Passo</th>
           <th>Comando Executado</th>
-          <th>B5 (Litros)</th>
-          <th>B3 (Litros)</th>
+          <th>Estado B5</th>
+          <th>Estado B3</th>
         </tr>
       </thead>
       <tbody id="log-body">
         <tr>
           <td>0</td>
-          <td>(Início) Estado inicial (Vazios).</td>
+          <td>(Início) Declaração de Variáveis (Vazias).</td>
           <td>0</td>
           <td>0</td>
         </tr>
@@ -192,39 +197,39 @@
 
   <!-- Tela de Vitória -->
   <div class="overlay" id="winScreen">
-    <h1>OBJETIVO ALCANÇADO!</h1>
-    <p style="font-size: 1.2rem; max-width: 500px; color: #cbd5e1;">
-      Parabéns! Você alcançou o estado final do algoritmo isolando exatamente 4 litros no balde de 5L.
+    <h1>EXTRATO LENDÁRIO SINTETIZADO!</h1>
+    <p style="font-size: 1.2rem; max-width: 550px; color: #cbd5e1; line-height: 1.6;">
+      Lógica validada com sucesso! Você conseguiu usar a sequência correta de comandos para manipular as variáveis de memória e gerar exatamente 4 Litros do Extrato Concentrado Lendário.
     </p>
-    <button onclick="resetGame()">Reiniciar Desafio</button>
+    <button onclick="resetGame()">Reiniciar Algoritmo</button>
   </div>
 
   <script>
-    // Variáveis de Estado (Memória)
-    let b5 = 0; // Quantidade atual no balde de 5L
-    let b3 = 0; // Quantidade atual no balde de 3L
+    // Declaração das Variáveis de Memória
+    let b5 = 0; 
+    let b3 = 0; 
     const MAX_B5 = 5;
     const MAX_B3 = 3;
     let stepCount = 0;
 
-    // Elementos da UI
-    const water5 = document.getElementById('water-5');
+    // Elementos do DOM
+    const juice5 = document.getElementById('juice-5');
     const text5 = document.getElementById('text-5');
-    const water3 = document.getElementById('water-3');
+    const juice3 = document.getElementById('juice-3');
     const text3 = document.getElementById('text-3');
     const logBody = document.getElementById('log-body');
     const winScreen = document.getElementById('winScreen');
 
-    // Funções Lógicas do Algoritmo
+    // Funções de Processamento
     function fill(jug) {
       let actionText = '';
       if (jug === 5 && b5 !== MAX_B5) {
         b5 = MAX_B5;
-        actionText = "Encher completamente o Balde de 5 Litros";
+        actionText = "Carregar Variável B5 com limite máximo de Extrato (5L).";
         updateState(actionText);
       } else if (jug === 3 && b3 !== MAX_B3) {
         b3 = MAX_B3;
-        actionText = "Encher completamente o Balde de 3 Litros";
+        actionText = "Carregar Variável B3 com limite máximo de Extrato (3L).";
         updateState(actionText);
       }
     }
@@ -233,11 +238,11 @@
       let actionText = '';
       if (jug === 5 && b5 !== 0) {
         b5 = 0;
-        actionText = "Esvaziar completamente o Balde de 5 Litros";
+        actionText = "Limpar os dados da Variável B5 (0L).";
         updateState(actionText);
       } else if (jug === 3 && b3 !== 0) {
         b3 = 0;
-        actionText = "Esvaziar completamente o Balde de 3 Litros";
+        actionText = "Limpar os dados da Variável B3 (0L).";
         updateState(actionText);
       }
     }
@@ -246,13 +251,13 @@
       let actionText = '';
       
       if (fromJug === 5 && toJug === 3) {
-        if (b5 === 0 || b3 === MAX_B3) return; // Nada a transferir ou destino cheio
+        if (b5 === 0 || b3 === MAX_B3) return; 
         const spaceLeftInB3 = MAX_B3 - b3;
         const amountToTransfer = Math.min(b5, spaceLeftInB3);
         
         b5 -= amountToTransfer;
         b3 += amountToTransfer;
-        actionText = "Despejar o conteúdo do Balde 5 no Balde 3";
+        actionText = `Transferir fluxo da B5 para B3 (Moveu ${amountToTransfer}L).`;
         updateState(actionText);
         
       } else if (fromJug === 3 && toJug === 5) {
@@ -262,25 +267,24 @@
         
         b3 -= amountToTransfer;
         b5 += amountToTransfer;
-        actionText = "Despejar o conteúdo do Balde 3 no Balde 5";
+        actionText = `Transferir fluxo da B3 para B5 (Moveu ${amountToTransfer}L).`;
         updateState(actionText);
       }
     }
 
-    // Atualiza a Interface e checa a condição de vitória
+    // Saída de Dados e Verificação
     function updateState(actionText) {
       stepCount++;
       
-      // Atualizar interface visual (Altura e Texto)
       const percent5 = (b5 / MAX_B5) * 100;
-      water5.style.height = `${percent5}%`;
+      juice5.style.height = `${percent5}%`;
       text5.innerText = `${b5}L`;
       
       const percent3 = (b3 / MAX_B3) * 100;
-      water3.style.height = `${percent3}%`;
+      juice3.style.height = `${percent3}%`;
       text3.innerText = `${b3}L`;
 
-      // Atualizar a Tabela de Log
+      // Atualiza o Log / Histórico
       const row = document.createElement('tr');
       row.innerHTML = `
         <td>${stepCount}</td>
@@ -290,7 +294,7 @@
       `;
       logBody.appendChild(row);
 
-      // Regra de Vitória (Objetivo Alcançado)
+      // Verificação do Output / Condição de Parada
       if (b5 === 4) {
         setTimeout(() => {
           winScreen.style.display = 'flex';
@@ -298,12 +302,12 @@
           finalRow.style.color = '#10b981';
           finalRow.innerHTML = `
             <td>${stepCount + 1}</td>
-            <td><strong>(Fim/Objetivo Alcançado)</strong></td>
+            <td><strong>(Output/Fim) Algoritmo Concluído.</strong></td>
             <td><strong>${b5}</strong></td>
             <td><strong>${b3}</strong></td>
           `;
           logBody.appendChild(finalRow);
-        }, 500); // Aguarda a animação da água terminar
+        }, 500); 
       }
     }
 
@@ -311,10 +315,10 @@
       b5 = 0;
       b3 = 0;
       stepCount = 0;
-      logBody.innerHTML = `<tr><td>0</td><td>(Início) Estado inicial (Vazios).</td><td>0</td><td>0</td></tr>`;
-      water5.style.height = '0%';
+      logBody.innerHTML = `<tr><td>0</td><td>(Início) Declaração de Variáveis (Vazias).</td><td>0</td><td>0</td></tr>`;
+      juice5.style.height = '0%';
       text5.innerText = '0L';
-      water3.style.height = '0%';
+      juice3.style.height = '0%';
       text3.innerText = '0L';
       winScreen.style.display = 'none';
     }
