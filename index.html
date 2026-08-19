@@ -2,678 +2,322 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Rampage: O Cão Gigante</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Desafio Lógico: O Enigma dos Baldes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Nunito', sans-serif; }
     
     body {
-      background: #000;
-      color: #fff;
-      font-family: 'Press Start 2P', monospace;
-      overflow: hidden;
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #gameCanvas {
-      display: block;
-      width: 100vw;
-      height: 100vh;
-      image-rendering: pixelated;
-    }
-
-    /* Interface Retro HUD */
-    .hud {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      right: 20px;
-      display: flex;
-      justify-content: space-between;
-      pointer-events: none;
-      text-shadow: 2px 2px 0px #000;
-    }
-
-    .hp-bar-bg {
-      width: 200px;
-      height: 20px;
-      background: #333;
-      border: 3px solid #fff;
-      margin-top: 5px;
-    }
-
-    .hp-bar-fill {
-      width: 100%;
-      height: 100%;
-      background: #e11d48;
-      transition: width 0.2s;
-    }
-
-    .hud-text { font-size: 14px; color: #facc15; }
-
-    /* Telas de Menu */
-    .overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.85);
+      background: #0f172a;
+      color: #f8fafc;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 20px;
-      text-align: center;
-      z-index: 10;
+      min-height: 100vh;
+      padding: 20px;
     }
 
-    h1 {
-      font-size: 32px;
-      color: #facc15;
-      text-shadow: 4px 4px 0 #b45309;
-      line-height: 1.5;
-    }
+    .header { text-align: center; margin-bottom: 30px; }
+    .header h1 { color: #38bdf8; font-size: 2.2rem; }
+    .header p { color: #94a3b8; max-width: 600px; margin-top: 10px; }
 
-    p { font-size: 12px; color: #cbd5e1; max-width: 600px; line-height: 1.8; }
-
-    .btn {
-      padding: 15px 30px;
-      font-family: 'Press Start 2P', monospace;
-      font-size: 16px;
-      color: #fff;
-      background: #b45309;
-      border: 4px solid #facc15;
-      cursor: pointer;
-      box-shadow: 4px 4px 0 #000;
-    }
-
-    .btn:hover { background: #d97706; transform: translate(-2px, -2px); box-shadow: 6px 6px 0 #000; }
-    .btn:active { transform: translate(2px, 2px); box-shadow: 0px 0px 0 #000; }
-
-    /* Controles Touch */
-    .touch-controls {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      right: 20px;
-      display: none;
-      justify-content: space-between;
-    }
-
-    .dpad, .action-pad { display: grid; gap: 10px; }
-    .dpad { grid-template-columns: 60px 60px 60px; grid-template-rows: 60px 60px; }
-    .action-pad { grid-template-columns: 80px; align-content: end; }
-
-    .t-btn {
-      background: rgba(255, 255, 255, 0.2);
-      border: 2px solid #fff;
-      color: #fff;
-      font-size: 24px;
+    .game-area {
       display: flex;
+      gap: 40px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .jug-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Desenho dos Baldes */
+    .jug {
+      position: relative;
+      border: 4px solid #cbd5e1;
+      border-top: none;
+      border-radius: 0 0 12px 12px;
+      background: rgba(255, 255, 255, 0.05);
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      margin-bottom: 15px;
+    }
+
+    .jug-5 { width: 120px; height: 250px; }
+    .jug-3 { width: 120px; height: 150px; }
+
+    .water {
+      width: 100%;
+      background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
+      transition: height 0.4s ease-in-out;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 10px;
+    }
+
+    .water-text {
+      color: white;
+      font-weight: 900;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+      font-size: 1.2rem;
+    }
+
+    /* Botões de Ação */
+    .controls { display: grid; grid-template-columns: 1fr; gap: 8px; width: 100%; }
+    
+    button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      font-size: 0.9rem;
+    }
+    
+    button:active { transform: scale(0.96); }
+    .btn-fill { background: #10b981; color: white; }
+    .btn-fill:hover { background: #059669; }
+    .btn-empty { background: #ef4444; color: white; }
+    .btn-empty:hover { background: #dc2626; }
+    .btn-transfer { background: #f59e0b; color: white; }
+    .btn-transfer:hover { background: #d97706; }
+
+    /* Tabela de Log (Inspirada na imagem) */
+    .log-container {
+      width: 100%;
+      max-width: 700px;
+      background: #1e293b;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    .log-container h2 { margin-bottom: 15px; font-size: 1.2rem; border-bottom: 1px solid #334155; padding-bottom: 10px;}
+
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;}
+    th, td { padding: 10px; border-bottom: 1px solid #334155; }
+    th { color: #38bdf8; }
+
+    /* Modal de Vitória */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      display: none;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      border-radius: 8px;
+      z-index: 50;
+      text-align: center;
+      padding: 20px;
     }
 
-    @media (hover: none) and (pointer: coarse) {
-      .touch-controls { display: flex; }
-      p.desktop-hint { display: none; }
-    }
+    .overlay h1 { color: #10b981; font-size: 3rem; margin-bottom: 10px; }
+    .overlay button { background: #38bdf8; color: #0f172a; padding: 15px 30px; font-size: 1.2rem; margin-top: 20px;}
+    .overlay button:hover { background: #0284c7; color: white; }
   </style>
 </head>
 <body>
 
-  <canvas id="gameCanvas"></canvas>
+  <div class="header">
+    <h1>O Enigma dos Baldes</h1>
+    <p><strong>Objetivo:</strong> Isole exatamente <strong>4 Litros</strong> no Balde de 5 Litros utilizando o fluxo sequencial correto de operações.</p>
+  </div>
 
-  <div class="hud">
-    <div>
-      <div class="hud-text">PONTOS: <span id="scoreVal">0</span></div>
-      <div class="hud-text" style="margin-top: 10px;">DIA: <span id="levelVal">1</span></div>
+  <div class="game-area">
+    <!-- Balde 5 Litros -->
+    <div class="jug-container">
+      <h2 style="margin-bottom: 10px; color:#cbd5e1;">Balde 5L (B5)</h2>
+      <div class="jug jug-5">
+        <div class="water" id="water-5" style="height: 0%;">
+          <span class="water-text" id="text-5">0L</span>
+        </div>
+      </div>
+      <div class="controls">
+        <button class="btn-fill" onclick="fill(5)">Encher B5</button>
+        <button class="btn-transfer" onclick="transfer(5, 3)">Despejar B5 ➔ B3</button>
+        <button class="btn-empty" onclick="empty(5)">Esvaziar B5</button>
+      </div>
     </div>
-    <div>
-      <div class="hud-text">RAMPAGE (HP)</div>
-      <div class="hp-bar-bg"><div class="hp-bar-fill" id="hpFill"></div></div>
+
+    <!-- Balde 3 Litros -->
+    <div class="jug-container">
+      <h2 style="margin-bottom: 10px; color:#cbd5e1;">Balde 3L (B3)</h2>
+      <div class="jug jug-3">
+        <div class="water" id="water-3" style="height: 0%;">
+          <span class="water-text" id="text-3">0L</span>
+        </div>
+      </div>
+      <div class="controls">
+        <button class="btn-fill" onclick="fill(3)">Encher B3</button>
+        <button class="btn-transfer" onclick="transfer(3, 5)">Despejar B3 ➔ B5</button>
+        <button class="btn-empty" onclick="empty(3)">Esvaziar B3</button>
+      </div>
     </div>
   </div>
 
-  <div class="overlay" id="startScreen">
-    <h1>RAMPAGE<br>CITY SMASHER</h1>
-    <p class="desktop-hint">
-      <strong>CONTROLES CLASSICOS:</strong><br><br>
-      A / D : Andar<br>
-      W / S : Escalar Prédios (quando encostado)<br>
-      ESPAÇO : Pular / Descer do prédio<br>
-      J ou K : Esmurrar (Destrua janelas para derrubar o prédio!)
+  <div class="log-container">
+    <h2>Histórico de Execução Lógica</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Passo</th>
+          <th>Comando Executado</th>
+          <th>B5 (Litros)</th>
+          <th>B3 (Litros)</th>
+        </tr>
+      </thead>
+      <tbody id="log-body">
+        <tr>
+          <td>0</td>
+          <td>(Início) Estado inicial (Vazios).</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Tela de Vitória -->
+  <div class="overlay" id="winScreen">
+    <h1>OBJETIVO ALCANÇADO!</h1>
+    <p style="font-size: 1.2rem; max-width: 500px; color: #cbd5e1;">
+      Parabéns! Você alcançou o estado final do algoritmo isolando exatamente 4 litros no balde de 5L.
     </p>
-    <button class="btn" id="btnStart">INSERIR FICHA</button>
-  </div>
-
-  <div class="overlay" id="gameOverScreen" style="display: none;">
-    <h1 style="color: #ef4444;">O MONSTRO CAIU!</h1>
-    <p>Pontuação Final: <span id="finalScore">0</span></p>
-    <button class="btn" id="btnRestart">CONTINUAR? (9)</button>
-  </div>
-
-  <!-- Controles Mobile -->
-  <div class="touch-controls">
-    <div class="dpad">
-      <div></div><div class="t-btn" id="t-up">⬆️</div><div></div>
-      <div class="t-btn" id="t-left">⬅️</div><div class="t-btn" id="t-down">⬇️</div><div class="t-btn" id="t-right">➡️</div>
-    </div>
-    <div class="action-pad">
-      <div class="t-btn" id="t-jump" style="height: 60px; margin-bottom: 10px;">PULO</div>
-      <div class="t-btn" id="t-punch" style="height: 80px; background: #e11d48;">SOCO</div>
-    </div>
+    <button onclick="resetGame()">Reiniciar Desafio</button>
   </div>
 
   <script>
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
+    // Variáveis de Estado (Memória)
+    let b5 = 0; // Quantidade atual no balde de 5L
+    let b3 = 0; // Quantidade atual no balde de 3L
+    const MAX_B5 = 5;
+    const MAX_B3 = 3;
+    let stepCount = 0;
 
-    // SFX (Audio API Retro)
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    function sfx(type) {
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.connect(gain); gain.connect(audioCtx.destination);
+    // Elementos da UI
+    const water5 = document.getElementById('water-5');
+    const text5 = document.getElementById('text-5');
+    const water3 = document.getElementById('water-3');
+    const text3 = document.getElementById('text-3');
+    const logBody = document.getElementById('log-body');
+    const winScreen = document.getElementById('winScreen');
 
-      if (type === 'punch') {
-        osc.type = 'square'; osc.frequency.setValueAtTime(100, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(20, audioCtx.currentTime + 0.1);
-        gain.gain.setValueAtTime(0.3, audioCtx.currentTime); gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-        osc.start(); osc.stop(audioCtx.currentTime + 0.1);
-      } else if (type === 'collapse') {
-        osc.type = 'sawtooth'; osc.frequency.setValueAtTime(80, audioCtx.currentTime);
-        osc.frequency.linearRampToValueAtTime(40, audioCtx.currentTime + 0.5);
-        gain.gain.setValueAtTime(0.5, audioCtx.currentTime); gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-        osc.start(); osc.stop(audioCtx.currentTime + 0.5);
-      } else if (type === 'eat') {
-        osc.type = 'sine'; osc.frequency.setValueAtTime(400, audioCtx.currentTime);
-        osc.frequency.setValueAtTime(600, audioCtx.currentTime + 0.1);
-        gain.gain.setValueAtTime(0.2, audioCtx.currentTime); gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-        osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+    // Funções Lógicas do Algoritmo
+    function fill(jug) {
+      let actionText = '';
+      if (jug === 5 && b5 !== MAX_B5) {
+        b5 = MAX_B5;
+        actionText = "Encher completamente o Balde de 5 Litros";
+        updateState(actionText);
+      } else if (jug === 3 && b3 !== MAX_B3) {
+        b3 = MAX_B3;
+        actionText = "Encher completamente o Balde de 3 Litros";
+        updateState(actionText);
       }
     }
 
-    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    window.addEventListener('resize', resize); resize();
-
-    // Variáveis Globais
-    let state = 'START';
-    let score = 0;
-    let level = 1;
-    let cameraX = 0;
-    let floorY = 0;
-
-    // Entidades
-    let player = {};
-    let buildings = [];
-    let enemies = [];
-    let bullets = [];
-    let particles = [];
-    let foods = [];
-    let screenShake = 0;
-
-    const keys = {};
-    window.addEventListener('keydown', e => { keys[e.code] = true; });
-    window.addEventListener('keyup', e => { keys[e.code] = false; });
-
-    // Inputs Mobile
-    const bindBtn = (id, code) => {
-      const el = document.getElementById(id);
-      el.addEventListener('touchstart', e => { e.preventDefault(); keys[code] = true; });
-      el.addEventListener('touchend', e => { e.preventDefault(); keys[code] = false; });
-    };
-    bindBtn('t-up', 'KeyW'); bindBtn('t-down', 'KeyS');
-    bindBtn('t-left', 'KeyA'); bindBtn('t-right', 'KeyD');
-    bindBtn('t-jump', 'Space'); bindBtn('t-punch', 'KeyJ');
-
-    function initLevel() {
-      floorY = canvas.height - 100;
-      player = {
-        x: 200, y: floorY - 80,
-        width: 60, height: 80,
-        vx: 0, vy: 0,
-        speed: 300, jumpForce: -600, gravity: 1500,
-        hp: player.hp || 100, maxHp: 100,
-        state: 'IDLE', // IDLE, WALK, CLIMB, FALL
-        facing: 1, // 1 direita, -1 esquerda
-        punchCooldown: 0,
-        climbTarget: null
-      };
-
-      buildings = [];
-      const numBuildings = 3 + level;
-      let bx = 400;
-      
-      for (let i = 0; i < numBuildings; i++) {
-        const floors = Math.floor(Math.random() * 4) + 4; // 4 a 7 andares
-        const cols = 3;
-        const b = { x: bx, width: 150, floors: [], isCollapsing: false, collapseTimer: 0 };
-        
-        for (let f = 0; f < floors; f++) {
-          const row = [];
-          for (let c = 0; c < cols; c++) row.push({ hp: 2, maxHp: 2, isFood: Math.random() < 0.15 });
-          b.floors.push(row);
-        }
-        buildings.push(b);
-        bx += 250 + Math.random() * 100;
-      }
-      
-      enemies = []; bullets = []; particles = []; foods = [];
-    }
-
-    function startGame() {
-      score = 0; level = 1;
-      player.hp = 100;
-      initLevel();
-      state = 'PLAY';
-      document.getElementById('startScreen').style.display = 'none';
-      document.getElementById('gameOverScreen').style.display = 'none';
-    }
-    document.getElementById('btnStart').onclick = startGame;
-    document.getElementById('btnRestart').onclick = startGame;
-
-    function addParticles(x, y, color, count) {
-      for(let i=0; i<count; i++) {
-        particles.push({
-          x, y, vx: (Math.random()-0.5)*400, vy: (Math.random()-1)*400,
-          color, life: 1, size: Math.random()*10+5
-        });
+    function empty(jug) {
+      let actionText = '';
+      if (jug === 5 && b5 !== 0) {
+        b5 = 0;
+        actionText = "Esvaziar completamente o Balde de 5 Litros";
+        updateState(actionText);
+      } else if (jug === 3 && b3 !== 0) {
+        b3 = 0;
+        actionText = "Esvaziar completamente o Balde de 3 Litros";
+        updateState(actionText);
       }
     }
 
-    // Lógica Principal
-    let lastTime = performance.now();
-    
-    function update(time) {
-      requestAnimationFrame(update);
-      const dt = Math.min((time - lastTime) / 1000, 0.05);
-      lastTime = time;
-
-      if (state !== 'PLAY') return;
-
-      if (screenShake > 0) screenShake -= dt * 10;
-
-      // === CONTROLE DO JOGADOR ===
-      if (player.punchCooldown > 0) player.punchCooldown -= dt;
-
-      // Lógica de Movimento e Escala
-      if (player.state !== 'CLIMB') {
-        // Gravidade e Chão
-        player.vy += player.gravity * dt;
-        player.y += player.vy * dt;
+    function transfer(fromJug, toJug) {
+      let actionText = '';
+      
+      if (fromJug === 5 && toJug === 3) {
+        if (b5 === 0 || b3 === MAX_B3) return; // Nada a transferir ou destino cheio
+        const spaceLeftInB3 = MAX_B3 - b3;
+        const amountToTransfer = Math.min(b5, spaceLeftInB3);
         
-        if (player.y >= floorY - player.height) {
-          player.y = floorY - player.height;
-          player.vy = 0;
-          player.state = (keys['KeyA'] || keys['KeyD']) ? 'WALK' : 'IDLE';
-        }
-
-        // Andar Horizontal
-        player.vx = 0;
-        if (keys['KeyA']) { player.vx = -player.speed; player.facing = -1; }
-        if (keys['KeyD']) { player.vx = player.speed; player.facing = 1; }
-        player.x += player.vx * dt;
-
-        // Pular
-        if (keys['Space'] && player.y === floorY - player.height) {
-          player.vy = player.jumpForce;
-          player.state = 'FALL';
-        }
-
-        // Tentar Escalar Prédio
-        if (keys['KeyW']) {
-          for (let b of buildings) {
-            if (b.isCollapsing) continue;
-            // Checar colisão lateral
-            const nearLeft = Math.abs((player.x + player.width) - b.x) < 15;
-            const nearRight = Math.abs(player.x - (b.x + b.width)) < 15;
-            const withinHeight = player.y < floorY && player.y > floorY - (b.floors.length * 60) - player.height;
-
-            if ((nearLeft || nearRight) && withinHeight) {
-              player.state = 'CLIMB';
-              player.climbTarget = b;
-              player.vx = 0; player.vy = 0;
-              player.x = nearLeft ? b.x - player.width : b.x + b.width;
-              player.facing = nearLeft ? 1 : -1;
-              break;
-            }
-          }
-        }
-      } else {
-        // Estado CLIMB
-        const b = player.climbTarget;
-        if (!b || b.isCollapsing) {
-          player.state = 'FALL'; player.climbTarget = null;
-        } else {
-          // Subir / Descer
-          if (keys['KeyW']) player.y -= player.speed * 0.7 * dt;
-          if (keys['KeyS']) player.y += player.speed * 0.7 * dt;
-          
-          // Limites do prédio
-          const topY = floorY - (b.floors.length * 60);
-          if (player.y < topY - player.height/2) player.y = topY - player.height/2;
-          if (player.y >= floorY - player.height) {
-            player.state = 'IDLE'; player.climbTarget = null;
-          }
-
-          // Pular do Prédio
-          if (keys['Space']) {
-            player.state = 'FALL';
-            player.climbTarget = null;
-            player.vy = -300;
-            player.vx = player.facing * -200; // Pula pra trás
-          }
-        }
-      }
-
-      // === ATACAR (SOCO) ===
-      if ((keys['KeyJ'] || keys['KeyK']) && player.punchCooldown <= 0) {
-        player.punchCooldown = 0.3;
-        sfx('punch');
+        b5 -= amountToTransfer;
+        b3 += amountToTransfer;
+        actionText = "Despejar o conteúdo do Balde 5 no Balde 3";
+        updateState(actionText);
         
-        let hitX = player.facing === 1 ? player.x + player.width + 10 : player.x - 10;
-        let hitY = player.y + player.height / 2;
-
-        // Bater no Prédio
-        if (player.state === 'CLIMB' && player.climbTarget) {
-          const b = player.climbTarget;
-          // Descobrir qual andar (floor) e qual coluna (col) acertou
-          const fIndex = Math.floor((floorY - hitY) / 60);
-          
-          if (fIndex >= 0 && fIndex < b.floors.length) {
-            const colIndex = player.facing === 1 ? 0 : 2; // Acerta a janela da ponta
-            const block = b.floors[fIndex][colIndex];
-            
-            if (block.hp > 0) {
-              block.hp--;
-              addParticles(hitX, hitY, '#cbd5e1', 5);
-              score += 10;
-              
-              if (block.hp === 0 && block.isFood) {
-                foods.push({ x: hitX, y: hitY, type: '🍗' });
-              }
-
-              // Checar se o prédio deve cair (Se uma fileira inteira ou laterais caírem)
-              let destroyedBlocks = 0;
-              for(let r of b.floors) for(let c of r) if(c.hp === 0) destroyedBlocks++;
-              
-              if (destroyedBlocks > (b.floors.length * 3) * 0.6) {
-                b.isCollapsing = true;
-                sfx('collapse');
-                screenShake = 10;
-                score += 500;
-              }
-            }
-          }
-        } else {
-          // Soco no ar / Chão (Para bater em helicópteros)
-          for(let i=enemies.length-1; i>=0; i--) {
-            let e = enemies[i];
-            if (Math.hypot(e.x - hitX, e.y - hitY) < 50) {
-              addParticles(e.x, e.y, '#f59e0b', 15);
-              enemies.splice(i, 1);
-              score += 150;
-              sfx('collapse');
-            }
-          }
-        }
-      }
-
-      // === COMER COMIDA ===
-      for(let i=foods.length-1; i>=0; i--) {
-        let f = foods[i];
-        f.y += 100 * dt; // cai
-        if (f.y > floorY - 20) f.y = floorY - 20;
+      } else if (fromJug === 3 && toJug === 5) {
+        if (b3 === 0 || b5 === MAX_B5) return;
+        const spaceLeftInB5 = MAX_B5 - b5;
+        const amountToTransfer = Math.min(b3, spaceLeftInB5);
         
-        if (Math.hypot(f.x - (player.x+player.width/2), f.y - (player.y+player.height/2)) < 50) {
-          player.hp = Math.min(player.maxHp, player.hp + 15);
-          foods.splice(i, 1);
-          score += 50;
-          sfx('eat');
-        }
+        b3 -= amountToTransfer;
+        b5 += amountToTransfer;
+        actionText = "Despejar o conteúdo do Balde 3 no Balde 5";
+        updateState(actionText);
       }
-
-      // === PRÉDIOS DESMORONANDO ===
-      let allDestroyed = true;
-      for (let i=buildings.length-1; i>=0; i--) {
-        let b = buildings[i];
-        if (!b.isCollapsing) allDestroyed = false;
-        else {
-          b.collapseTimer += dt;
-          if (b.collapseTimer > 0.1 && b.floors.length > 0) {
-            b.collapseTimer = 0;
-            b.floors.pop(); // Remove um andar
-            addParticles(b.x + b.width/2, floorY - b.floors.length*60, '#94a3b8', 10);
-            sfx('punch');
-          }
-        }
-      }
-
-      // === INIMIGOS (Helicópteros) ===
-      if (Math.random() < 0.005 * level && enemies.length < 3) {
-        enemies.push({
-          x: player.x + (Math.random() > 0.5 ? 800 : -800),
-          y: player.y - 150 - Math.random() * 200,
-          vx: Math.random() > 0.5 ? 150 : -150,
-          shootTimer: 0
-        });
-      }
-
-      for (let i=enemies.length-1; i>=0; i--) {
-        let e = enemies[i];
-        e.x += e.vx * dt;
-        e.shootTimer += dt;
-        
-        // Atirar
-        if (e.shootTimer > 2) {
-          e.shootTimer = 0;
-          const angle = Math.atan2((player.y+player.height/2) - e.y, (player.x+player.width/2) - e.x);
-          bullets.push({ x: e.x, y: e.y, vx: Math.cos(angle)*300, vy: Math.sin(angle)*300 });
-        }
-
-        if (Math.abs(e.x - player.x) > 1500) enemies.splice(i, 1);
-      }
-
-      // Balas dos inimigos
-      for (let i=bullets.length-1; i>=0; i--) {
-        let b = bullets[i];
-        b.x += b.vx * dt; b.y += b.vy * dt;
-        
-        // Colisão com jogador
-        if (b.x > player.x && b.x < player.x+player.width && b.y > player.y && b.y < player.y+player.height) {
-          player.hp -= 5;
-          addParticles(b.x, b.y, '#ef4444', 5);
-          bullets.splice(i, 1);
-          if (player.hp <= 0) {
-            state = 'GAMEOVER';
-            document.getElementById('finalScore').innerText = score;
-            document.getElementById('gameOverScreen').style.display = 'flex';
-          }
-        } else if (b.y > floorY) bullets.splice(i, 1);
-      }
-
-      // Partículas
-      for(let i=particles.length-1; i>=0; i--) {
-        let p = particles[i];
-        p.x += p.vx * dt; p.y += p.vy * dt;
-        p.life -= dt * 2;
-        if (p.life <= 0) particles.splice(i, 1);
-      }
-
-      // Progresso de Nível
-      if (allDestroyed && buildings.length > 0) {
-        level++;
-        initLevel();
-        player.hp = Math.min(100, player.hp + 30); // cura parcial
-      }
-
-      // Câmera segue jogador
-      cameraX = player.x - canvas.width / 2 + player.width / 2;
-
-      // HUD Update
-      document.getElementById('scoreVal').innerText = score;
-      document.getElementById('levelVal').innerText = level;
-      document.getElementById('hpFill').style.width = Math.max(0, player.hp) + '%';
-
-      render();
     }
 
-    function render() {
-      // Fundo Noturno
-      ctx.fillStyle = '#0f172a';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // Atualiza a Interface e checa a condição de vitória
+    function updateState(actionText) {
+      stepCount++;
       
-      // Lua
-      ctx.fillStyle = '#fef08a';
-      ctx.beginPath(); ctx.arc(canvas.width - 150, 100, 50, 0, Math.PI*2); ctx.fill();
-
-      ctx.save();
+      // Atualizar interface visual (Altura e Texto)
+      const percent5 = (b5 / MAX_B5) * 100;
+      water5.style.height = `${percent5}%`;
+      text5.innerText = `${b5}L`;
       
-      // Screen Shake
-      if (screenShake > 0) {
-        ctx.translate((Math.random()-0.5)*screenShake, (Math.random()-0.5)*screenShake);
+      const percent3 = (b3 / MAX_B3) * 100;
+      water3.style.height = `${percent3}%`;
+      text3.innerText = `${b3}L`;
+
+      // Atualizar a Tabela de Log
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${stepCount}</td>
+        <td>${actionText}</td>
+        <td>${b5}</td>
+        <td>${b3}</td>
+      `;
+      logBody.appendChild(row);
+
+      // Regra de Vitória (Objetivo Alcançado)
+      if (b5 === 4) {
+        setTimeout(() => {
+          winScreen.style.display = 'flex';
+          const finalRow = document.createElement('tr');
+          finalRow.style.color = '#10b981';
+          finalRow.innerHTML = `
+            <td>${stepCount + 1}</td>
+            <td><strong>(Fim/Objetivo Alcançado)</strong></td>
+            <td><strong>${b5}</strong></td>
+            <td><strong>${b3}</strong></td>
+          `;
+          logBody.appendChild(finalRow);
+        }, 500); // Aguarda a animação da água terminar
       }
-      ctx.translate(-cameraX, 0);
-
-      // Chão
-      ctx.fillStyle = '#334155';
-      ctx.fillRect(cameraX, floorY, canvas.width + 100, canvas.height - floorY);
-
-      // Prédios
-      for (let b of buildings) {
-        const floorH = 60;
-        const colW = b.width / 3;
-        
-        for (let f = 0; f < b.floors.length; f++) {
-          const row = b.floors[f];
-          const y = floorY - (f + 1) * floorH;
-          
-          for (let c = 0; c < 3; c++) {
-            const block = row[c];
-            const x = b.x + c * colW;
-            
-            // Fundo do bloco
-            ctx.fillStyle = block.hp > 0 ? '#64748b' : '#334155';
-            ctx.fillRect(x, y, colW, floorH);
-            ctx.strokeStyle = '#000'; ctx.strokeRect(x, y, colW, floorH);
-            
-            // Janelas
-            if (block.hp > 0) {
-              ctx.fillStyle = block.hp === 2 ? '#facc15' : '#475569'; // Inteira ou Quebrada
-              ctx.fillRect(x + 10, y + 10, colW - 20, floorH - 20);
-            }
-          }
-        }
-      }
-
-      // Comidas
-      ctx.font = '30px Arial';
-      for (let f of foods) ctx.fillText(f.type, f.x - 15, f.y + 10);
-
-      // Inimigos
-      ctx.font = '40px Arial';
-      for (let e of enemies) {
-        ctx.fillText('🚁', e.x - 20, e.y + 20);
-      }
-
-      // Balas
-      ctx.fillStyle = '#facc15';
-      for (let b of bullets) {
-        ctx.beginPath(); ctx.arc(b.x, b.y, 4, 0, Math.PI*2); ctx.fill();
-      }
-
-      // Partículas
-      for (let p of particles) {
-        ctx.globalAlpha = p.life;
-        ctx.fillStyle = p.color;
-        ctx.fillRect(p.x, p.y, p.size, p.size);
-      }
-      ctx.globalAlpha = 1;
-
-      // JOGADOR (Lobisomem / Cão Gigante)
-     // JOGADOR (Labrador Bípede em Pixel Art)
-      ctx.save();
-      // Move a "câmera" para o centro do jogador para podermos espelhar ao andar para trás
-      ctx.translate(player.x + player.width / 2, player.y + player.height / 2);
-      ctx.scale(player.facing, 1);
-      
-      // Braço atacando esticado (com a cor marrom escuro da pata)
-      if (player.punchCooldown > 0.15) {
-        ctx.fillStyle = '#78350f'; 
-        ctx.fillRect(15, -15, 40, 15);
-      }
-
-      // Matriz de Pixel Art: Cada número representa uma cor
-      const labSprite = [
-        "  222111    ", // Cabeça e Orelha Traseira
-        "  2111112   ",
-        "  11131112  ", // Olho (3)
-        "  11111112  ", // Focinho
-        "   111152   ", // Boca com Língua (5) e Nariz (2)
-        "   44444    ", // Coleira (4)
-        "  1111111   ", // Peitoral
-        " 111111111  ", // Corpo
-        " 111111111  ",
-        " 11 1111 11 ", // Braços relaxados
-        " 22 1111 22 ", // Patas (Mãos)
-        "    1111    ", // Barriga
-        "   11  11   ", // Pernas
-        "   11  11   ",
-        "   22  22   "  // Patas (Pés)
-      ];
-
-      // Paleta de Cores do Labrador
-      const colors = {
-        '1': '#b45309', // Marrom Base (Pelo)
-        '2': '#78350f', // Marrom Escuro (Orelhas, Focinho, Patas)
-        '3': '#000000', // Preto (Olho)
-        '4': '#ef4444', // Vermelho (Coleira)
-        '5': '#f43f5e'  // Rosa (Língua de fora)
-      };
-
-      const pixelSize = 5; // Cada caractere do array vai ter 5x5 pixels de tamanho na tela
-      
-      // Ponto de partida para desenhar (centraliza a matriz de 12x15 na área do jogador)
-      const startX = -30;
-      const startY = -37;
-
-      // Loop de renderização que lê a matriz e desenha os quadradinhos
-      for (let row = 0; row < labSprite.length; row++) {
-        for (let col = 0; col < labSprite[row].length; col++) {
-          const char = labSprite[row][col];
-          if (colors[char]) { // Se for um número mapeado na paleta, desenha
-            ctx.fillStyle = colors[char];
-            ctx.fillRect(startX + (col * pixelSize), startY + (row * pixelSize), pixelSize, pixelSize);
-          }
-        }
-      }
-      ctx.restore();
-      
-      // Braço atacando
-      if (player.punchCooldown > 0.15) {
-        ctx.fillStyle = '#57534e';
-        ctx.fillRect(20, -10, 40, 20);
-      }
-
-      ctx.font = '70px Arial';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('🐺', 0, 0);
-      ctx.restore();
-
-      ctx.restore();
     }
 
-    requestAnimationFrame(update);
+    function resetGame() {
+      b5 = 0;
+      b3 = 0;
+      stepCount = 0;
+      logBody.innerHTML = `<tr><td>0</td><td>(Início) Estado inicial (Vazios).</td><td>0</td><td>0</td></tr>`;
+      water5.style.height = '0%';
+      text5.innerText = '0L';
+      water3.style.height = '0%';
+      text3.innerText = '0L';
+      winScreen.style.display = 'none';
+    }
   </script>
 </body>
 </html>
