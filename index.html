@@ -90,7 +90,7 @@
       border: 2px solid #555;
       border-top-color: #777;
       border-left-color: #777;
-      box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.8); /* Sombra dura, sem blur */
+      box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.8);
     }
 
     .jug-container { flex: 1; min-width: 260px; max-width: 300px; }
@@ -130,7 +130,7 @@
       font-size: 1.5rem;
     }
 
-    /* Botões Físicos (Chanfrados) */
+    /* Botões Físicos */
     .controls { display: grid; grid-template-columns: 1fr; gap: 10px; width: 100%; }
     
     button {
@@ -145,7 +145,7 @@
     
     button:active { 
       border-style: inset;
-      padding: 13px 11px 11px 13px; /* Simula o botão afundando */
+      padding: 13px 11px 11px 13px;
     }
     
     .btn-fill { 
@@ -166,7 +166,7 @@
       border-color: #ffcc00 #332200 #332200 #ffcc00;
     }
 
-    /* Painel de Histórico (Terminal de Hacker) */
+    /* Painel de Histórico (Terminal) */
     .history-panel { flex: 1; min-width: 280px; max-height: 520px; align-items: stretch;}
     
     .history-panel h2 {
@@ -201,7 +201,7 @@
     .history-list::-webkit-scrollbar-track { background: #111; border-left: 1px solid #333;}
     .history-list::-webkit-scrollbar-thumb { background: #555; border: 1px solid #777;}
 
-    /* Telas de Sobreposição (Avisos Críticos) */
+    /* Telas de Sobreposição */
     .overlay {
       position: fixed;
       inset: 0;
@@ -227,7 +227,6 @@
     
     .overlay p { font-size: 1.2rem; color: #fff; max-width: 600px; margin-bottom: 25px; line-height: 1.5; background: #000; padding: 20px; border: 2px solid #555; }
     
-    /* Caixa de Transmissão / Missão */
     .whatsapp-box {
       background: #002200;
       border: 2px solid #00ff00;
@@ -253,6 +252,20 @@
 
     .btn-reset { background: #ffaa00; color: #000; padding: 15px 30px; font-size: 1.2rem; border: 3px solid #ffeeaa; border-right-color:#885500; border-bottom-color:#885500;}
     .btn-reset:hover { background: #ffcc00; }
+
+    /* Estilo do Countdown da Instrução */
+    #introCountdown {
+      margin-top: 20px;
+      font-size: 1.4rem;
+      color: #ff3333;
+      text-shadow: 0 0 8px #ff3333;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
   </style>
 </head>
 <body>
@@ -264,7 +277,9 @@
       <p>> ALERTA DE MISSÃO: PROJETO EM ANDAMENTO <br><br>> Desarme a bomba isolando exatamente 4 Litros no Balde de 5L. <br>> OBJETIVO SECUNDÁRIO: Tire um PRINT da tela de vitória e envie no WhatsApp para confirmação visual de sucesso!</p>
     </div>
     <p>A bomba está armada na fonte do parque. Você tem exatamente <strong>2 minutos</strong> para colocar 4 litros de água no galão sobre o sensor.<br>Não há medições. Apenas lógica bruta. O tempo está correndo.</p>
+    
     <button class="btn-main" onclick="beginChallenge()">[ INICIAR DESARME ]</button>
+    <div id="introCountdown">INÍCIO AUTOMÁTICO EM: 30s</div>
   </div>
 
   <!-- Cabeçalho do Jogo -->
@@ -333,6 +348,17 @@
   </div>
 
   <script>
+    // Temporizador da Tela de Instruções
+    let introTimeLeft = 30;
+    let introTimerInterval = setInterval(() => {
+      introTimeLeft--;
+      document.getElementById('introCountdown').innerText = `INÍCIO AUTOMÁTICO EM: ${introTimeLeft}s`;
+      
+      if (introTimeLeft <= 0) {
+        beginChallenge();
+      }
+    }, 1000);
+
     // Lógica e Memória do Jogo
     let b5 = 0; 
     let b3 = 0; 
@@ -341,15 +367,16 @@
     let gameActive = false;
     let moves = 0;
 
-    // Cronômetro
+    // Cronômetro do Jogo Principal
     let timeLeft = 120;
     let timerInterval = null;
     const timerDisplay = document.getElementById('timer');
 
     function beginChallenge() {
+      clearInterval(introTimerInterval); // Para o contador de instruções
       document.getElementById('startScreen').style.display = 'none';
       gameActive = true;
-      document.getElementById('historyList').innerHTML = ''; // Limpa o "Aguardando input..."
+      document.getElementById('historyList').innerHTML = ''; 
       startTimer();
     }
 
