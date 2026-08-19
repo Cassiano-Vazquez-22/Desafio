@@ -275,7 +275,7 @@
     </div>
     <p>A bomba está armada na fonte do parque. Você tem exatamente <strong>1 minuto e 30 segundos</strong> para colocar 4 litros de água no galão sobre o sensor.<br>Os baldes não possuem marcações. Prepare-se.</p>
     
-    <div id="introCountdown">INÍCIO AUTOMÁTICO EM: 30s</div>
+    <div id="introCountdown">INÍCIO AUTOMÁTICO EM: 20s</div>
   </div>
     
   <!-- Cabeçalho do Jogo -->
@@ -325,14 +325,14 @@
   <!-- Tela de Vitória -->
   <div class="overlay" id="winScreen">
     <h1 style="color: #00ff00; text-shadow: 4px 4px 0px #005500;">BOMBA DESARMADA</h1>
-    <p>Ameaça neutralizada. Você salvou a cidade!<br><br>Envie o relatório (Print) no WhatsApp!</p>
+    <p>Tu não explodiu e salvou a cidade!<br><br>Envie o relatório (Print) no WhatsApp!</p>
     <button class="btn-reset" onclick="resetGame()">[ NOVA SIMULAÇÃO ]</button>
   </div>
 
   <!-- Tela de Derrota -->
   <div class="overlay" id="failScreen">
     <h1 style="color: #ff0000;">BOOM!</h1>
-    <p>Falha crítica no sistema. Você EXPLODIU junto com a cidade.</p>
+    <p>Você EXPLODIU junto com a cidade.</p>
     <button class="btn-reset" onclick="resetGame()">[ TENTAR NOVAMENTE ]</button>
   </div>
 
@@ -341,7 +341,7 @@
 
   <script>
     // Temporizador da Tela de Instruções
-    let introTimeLeft = 30;
+    let introTimeLeft = 20;
     let introTimerInterval = setInterval(() => {
       introTimeLeft--;
       document.getElementById('introCountdown').innerText = `INÍCIO AUTOMÁTICO EM: ${introTimeLeft}s`;
