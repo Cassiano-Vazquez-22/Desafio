@@ -18,26 +18,8 @@
       padding: 15px;
     }
 
-    /* Cabeçalho e Instruções do WhatsApp */
-    .header { text-align: center; margin-bottom: 20px; width: 100%; max-width: 650px; }
-    .header h1 { color: #facc15; font-size: 2rem; margin-bottom: 10px; text-transform: uppercase;}
-    
-    .whatsapp-box {
-      background: #064e3b;
-      border: 2px solid #10b981;
-      padding: 12px;
-      border-radius: 8px;
-      margin-bottom: 15px;
-    }
-    
-    .whatsapp-box p {
-      color: #ecfdf5;
-      font-size: 1rem;
-      font-weight: 700;
-      line-height: 1.4;
-    }
-
-    .story { color: #94a3b8; font-size: 0.95rem; margin-bottom: 15px; }
+    .header { text-align: center; margin-bottom: 20px; width: 100%; max-width: 650px; margin-top: 10px; }
+    .header h1 { color: #facc15; font-size: 2.2rem; margin-bottom: 10px; text-transform: uppercase;}
 
     /* Cronômetro Digital */
     .timer-box {
@@ -45,24 +27,34 @@
       border: 3px solid #334155;
       border-radius: 8px;
       padding: 10px 30px;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
       box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
     }
     
     #timer {
       font-family: 'Share Tech Mono', monospace;
-      font-size: 3rem;
-      color: #10b981; /* Fica vermelho quando < 30s */
+      font-size: 3.5rem;
+      color: #10b981;
       text-shadow: 0 0 10px currentColor;
     }
 
-    .game-area {
+    /* Layout Principal: Jogo + Histórico */
+    .main-container {
       display: flex;
-      gap: 30px;
-      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 20px;
+      width: 100%;
+      max-width: 1000px;
+      justify-content: center;
+    }
+
+    .game-area {
+      flex: 2;
+      display: flex;
+      gap: 20px;
       flex-wrap: wrap;
       justify-content: center;
-      width: 100%;
+      min-width: 300px;
     }
 
     .jug-container {
@@ -74,8 +66,8 @@
       border-radius: 16px;
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
       flex: 1;
-      min-width: 280px;
-      max-width: 320px;
+      min-width: 260px;
+      max-width: 300px;
     }
 
     .jug-container h2 { margin-bottom: 15px; color:#cbd5e1; font-size: 1.2rem; text-align: center; }
@@ -114,20 +106,19 @@
     }
 
     /* Botões */
-    .controls { display: grid; grid-template-columns: 1fr; gap: 10px; width: 100%; }
+    .controls { display: grid; grid-template-columns: 1fr; gap: 8px; width: 100%; }
     
     button {
-      padding: 12px;
+      padding: 10px;
       border: none;
       border-radius: 8px;
       font-weight: 700;
       cursor: pointer;
       transition: background 0.2s, transform 0.1s;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
     
     button:active { transform: scale(0.96); }
-    button:disabled { opacity: 0.5; cursor: not-allowed; }
     
     .btn-fill { background: #0284c7; color: white; }
     .btn-fill:hover { background: #0369a1; }
@@ -138,7 +129,59 @@
     .btn-transfer { background: #8b5cf6; color: white; }
     .btn-transfer:hover { background: #7c3aed; }
 
-    /* Modais */
+    /* Painel de Histórico */
+    .history-panel {
+      flex: 1;
+      min-width: 280px;
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      max-height: 520px;
+    }
+
+    .history-panel h2 {
+      color: #facc15;
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 2px solid #334155;
+      padding-bottom: 10px;
+    }
+
+    .history-list {
+      list-style: none;
+      overflow-y: auto;
+      flex-grow: 1;
+      padding-right: 5px;
+      margin-top: 10px;
+    }
+
+    .history-list li {
+      background: #334155;
+      padding: 10px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      border-left: 4px solid #38bdf8;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateX(-10px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Scrollbar customizada para o histórico */
+    .history-list::-webkit-scrollbar { width: 6px; }
+    .history-list::-webkit-scrollbar-track { background: #1e293b; }
+    .history-list::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+
+    /* Modais & Telas de Sobreposição */
     .overlay {
       position: fixed;
       inset: 0;
@@ -152,73 +195,103 @@
       padding: 20px;
     }
 
-    .overlay h1 { font-size: 3rem; margin-bottom: 10px; }
-    .overlay p { font-size: 1.2rem; color: #cbd5e1; max-width: 400px; margin-bottom: 25px; line-height: 1.5; }
+    #startScreen { display: flex; }
+
+    .overlay h1 { font-size: 2.5rem; margin-bottom: 10px; color: #facc15; text-transform: uppercase; }
+    .overlay p { font-size: 1.1rem; color: #cbd5e1; max-width: 500px; margin-bottom: 25px; line-height: 1.5; }
     
+    .whatsapp-box {
+      background: #064e3b;
+      border: 2px solid #10b981;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      max-width: 500px;
+    }
+    
+    .whatsapp-box p { color: #ecfdf5; font-size: 1rem; font-weight: 700; line-height: 1.4; margin: 0; }
+
+    .btn-main { background: #10b981; color: white; padding: 15px 40px; font-size: 1.3rem; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); }
+    .btn-main:hover { background: #059669; }
+
     .btn-reset { background: #facc15; color: #000; padding: 15px 30px; font-size: 1.2rem; }
     .btn-reset:hover { background: #eab308; }
-
-    /* Tabela Oculta (Apenas para Lógica por trás) */
-    .log-container { display: none; }
   </style>
 </head>
 <body>
 
-  <div class="header">
+  <!-- Tela de Início -->
+  <div class="overlay" id="startScreen">
     <h1>Duro de Matar 3</h1>
     <div class="whatsapp-box">
-      <p>🚨 ESTOU FAZENDO ESTE DESAFIO PARA UM PROJETO! 🚨<br><br>Tente desarmar a bomba colocando exatamente 4 Litros no Balde de 5L. Se você conseguir, TIRE UM PRINT DA TELA DE VITÓRIA e me mande. </p>
+      <p>🚨 ESTOU FAZENDO ESTE DESAFIO PARA UM PROJETO! 🚨<br><br>Tente desarmar a bomba colocando exatamente 4 Litros no Balde de 5L. Se você conseguir, TIRE UM PRINT DA TELA DE VITÓRIA e me mande para eu postar no meu Status do WhatsApp!</p>
     </div>
-    <p class="story">A bomba está armada na fonte. Você tem exatamente 2 minutos para colocar 4 litros exatos de água no galão no sensor. O tempo começou a correr!</p>
+    <p>A bomba está armada na fonte. Você tem exatamente <strong>2 minutos</strong> para colocar 4 litros exatos de água no galão sobre o sensor. Pense rápido!</p>
+    <button class="btn-main" onclick="beginChallenge()">INICIAR O DESAFIO</button>
+  </div>
+
+  <!-- Cabeçalho do Jogo -->
+  <div class="header">
+    <h1>Desarme a Bomba</h1>
   </div>
 
   <div class="timer-box">
     <div id="timer">02:00</div>
   </div>
 
-  <div class="game-area">
-    <!-- Balde 5 Litros -->
-    <div class="jug-container">
-      <h2>Balde de 5 Litros</h2>
-      <div class="jug jug-5">
-        <div class="water" id="water-5" style="height: 0%;">
-          <span class="water-text" id="text-5">0L</span>
+  <div class="main-container">
+    <div class="game-area">
+      <!-- Balde 5 Litros -->
+      <div class="jug-container">
+        <h2>Balde de 5 Litros</h2>
+        <div class="jug jug-5">
+          <div class="water" id="water-5" style="height: 0%;">
+            <span class="water-text" id="text-5">0L</span>
+          </div>
+        </div>
+        <div class="controls">
+          <button class="btn-fill" onclick="fill(5)">Encher Balde 5L</button>
+          <button class="btn-transfer" onclick="transfer(5, 3)">Transferir 5L ➔ 3L</button>
+          <button class="btn-empty" onclick="empty(5)">Esvaziar Balde 5L</button>
         </div>
       </div>
-      <div class="controls">
-        <button class="btn-fill" onclick="fill(5)">Encher Balde de 5 Litros</button>
-        <button class="btn-transfer" onclick="transfer(5, 3)">Transferir para Balde de 3 Litros</button>
-        <button class="btn-empty" onclick="empty(5)">Esvaziar Balde de 5 Litros</button>
+
+      <!-- Balde 3 Litros -->
+      <div class="jug-container">
+        <h2>Balde de 3 Litros</h2>
+        <div class="jug jug-3">
+          <div class="water" id="water-3" style="height: 0%;">
+            <span class="water-text" id="text-3">0L</span>
+          </div>
+        </div>
+        <div class="controls">
+          <button class="btn-fill" onclick="fill(3)">Encher Balde 3L</button>
+          <button class="btn-transfer" onclick="transfer(3, 5)">Transferir 3L ➔ 5L</button>
+          <button class="btn-empty" onclick="empty(3)">Esvaziar Balde 3L</button>
+        </div>
       </div>
     </div>
 
-    <!-- Balde 3 Litros -->
-    <div class="jug-container">
-      <h2>Balde de 3 Litros</h2>
-      <div class="jug jug-3">
-        <div class="water" id="water-3" style="height: 0%;">
-          <span class="water-text" id="text-3">0L</span>
-        </div>
-      </div>
-      <div class="controls">
-        <button class="btn-fill" onclick="fill(3)">Encher Balde de 3 Litros</button>
-        <button class="btn-transfer" onclick="transfer(3, 5)">Transferir para Balde de 5 Litros</button>
-        <button class="btn-empty" onclick="empty(3)">Esvaziar Balde de 3 Litros</button>
-      </div>
+    <!-- Painel Lateral de Histórico -->
+    <div class="history-panel">
+      <h2>Ações <span id="moveCounter">0</span></h2>
+      <ul class="history-list" id="historyList">
+        <!-- O histórico aparecerá aqui -->
+      </ul>
     </div>
   </div>
 
   <!-- Tela de Vitória -->
   <div class="overlay" id="winScreen">
     <h1 style="color: #10b981;">BOMBA DESARMADA!</h1>
-    <p>E não é que tu conseguiu </p>
+    <p>Incrível! Você acertou a lógica em <strong id="finalMoves">0</strong> ações! Tire o print desta tela e me mande lá no WhatsApp agora mesmo! 📸</p>
     <button class="btn-reset" onclick="resetGame()">Jogar Novamente</button>
   </div>
 
   <!-- Tela de Derrota -->
   <div class="overlay" id="failScreen">
     <h1 style="color: #ef4444;">BOOM! 💥</h1>
-    <p>O tempo acabou, tu explodiu hahahaha.</p>
+    <p>O tempo acabou e a bomba explodiu! A lógica não foi rápida o suficiente.</p>
     <button class="btn-reset" onclick="resetGame()">Tentar de Novo</button>
   </div>
 
@@ -228,14 +301,20 @@
     let b3 = 0; 
     const MAX_B5 = 5;
     const MAX_B3 = 3;
-    let gameActive = true;
+    let gameActive = false;
+    let moves = 0;
 
     // Cronômetro
-    let timeLeft = 120; // 120 segundos = 2 minutos
+    let timeLeft = 120;
     let timerInterval = null;
     const timerDisplay = document.getElementById('timer');
 
-    // Inicia o cronômetro assim que o site carrega
+    function beginChallenge() {
+      document.getElementById('startScreen').style.display = 'none';
+      gameActive = true;
+      startTimer();
+    }
+
     function startTimer() {
       if (timerInterval) clearInterval(timerInterval);
       timerInterval = setInterval(() => {
@@ -255,7 +334,6 @@
       let s = (timeLeft % 60).toString().padStart(2, '0');
       timerDisplay.innerText = `${m}:${s}`;
 
-      // Muda para vermelho nos últimos 30 segundos
       if (timeLeft <= 30) {
         timerDisplay.style.color = '#ef4444';
       } else {
@@ -271,28 +349,54 @@
     function gameWon() {
       gameActive = false;
       clearInterval(timerInterval);
+      document.getElementById('finalMoves').innerText = moves;
       setTimeout(() => {
         document.getElementById('winScreen').style.display = 'flex';
-      }, 500); // Dá tempo da animação da água subir antes da tela aparecer
+      }, 500);
     }
 
-    // Elementos DOM
-    const water5 = document.getElementById('water-5');
-    const text5 = document.getElementById('text-5');
-    const water3 = document.getElementById('water-3');
-    const text3 = document.getElementById('text-3');
+    // Sistema de Log de Ações
+    const historyList = document.getElementById('historyList');
+    const moveCounter = document.getElementById('moveCounter');
+
+    function logAction(actionText) {
+      moves++;
+      moveCounter.innerText = moves;
+      
+      const li = document.createElement('li');
+      li.innerHTML = `<strong>#${moves}</strong> - ${actionText}<br><small style="color: #94a3b8;">Status: B5=(${b5}L) | B3=(${b3}L)</small>`;
+      
+      // Coloca a ação mais recente no topo da lista
+      historyList.prepend(li);
+    }
 
     // Funções dos Botões
     function fill(jug) {
       if (!gameActive) return;
-      if (jug === 5 && b5 !== MAX_B5) { b5 = MAX_B5; updateState(); } 
-      else if (jug === 3 && b3 !== MAX_B3) { b3 = MAX_B3; updateState(); }
+      if (jug === 5 && b5 !== MAX_B5) { 
+        b5 = MAX_B5; 
+        logAction("Encheu o Balde de 5 Litros");
+        updateState(); 
+      } 
+      else if (jug === 3 && b3 !== MAX_B3) { 
+        b3 = MAX_B3; 
+        logAction("Encheu o Balde de 3 Litros");
+        updateState(); 
+      }
     }
 
     function empty(jug) {
       if (!gameActive) return;
-      if (jug === 5 && b5 !== 0) { b5 = 0; updateState(); } 
-      else if (jug === 3 && b3 !== 0) { b3 = 0; updateState(); }
+      if (jug === 5 && b5 !== 0) { 
+        b5 = 0; 
+        logAction("Esvaziou o Balde de 5 Litros");
+        updateState(); 
+      } 
+      else if (jug === 3 && b3 !== 0) { 
+        b3 = 0; 
+        logAction("Esvaziou o Balde de 3 Litros");
+        updateState(); 
+      }
     }
 
     function transfer(fromJug, toJug) {
@@ -303,6 +407,7 @@
         const amountToTransfer = Math.min(b5, spaceLeftInB3);
         b5 -= amountToTransfer;
         b3 += amountToTransfer;
+        logAction(`Transferiu ${amountToTransfer}L do Balde 5L para o Balde 3L`);
         updateState();
       } else if (fromJug === 3 && toJug === 5) {
         if (b3 === 0 || b5 === MAX_B5) return;
@@ -310,23 +415,22 @@
         const amountToTransfer = Math.min(b3, spaceLeftInB5);
         b3 -= amountToTransfer;
         b5 += amountToTransfer;
+        logAction(`Transferiu ${amountToTransfer}L do Balde 3L para o Balde 5L`);
         updateState();
       }
     }
 
     function updateState() {
-      // Animação Balde 5L
       const percent5 = (b5 / MAX_B5) * 100;
-      water5.style.height = `${percent5}%`;
-      text5.innerText = `${b5}L`;
+      document.getElementById('water-5').style.height = `${percent5}%`;
+      document.getElementById('text-5').innerText = `${b5}L`;
       
-      // Animação Balde 3L
       const percent3 = (b3 / MAX_B3) * 100;
-      water3.style.height = `${percent3}%`;
-      text3.innerText = `${b3}L`;
+      document.getElementById('water-3').style.height = `${percent3}%`;
+      document.getElementById('text-3').innerText = `${b3}L`;
 
-      // Condição de Vitória!
       if (b5 === 4) {
+        logAction("Bomba Desarmada com Sucesso!");
         gameWon();
       }
     }
@@ -334,20 +438,23 @@
     function resetGame() {
       b5 = 0; b3 = 0;
       timeLeft = 120;
+      moves = 0;
       gameActive = true;
       
-      water5.style.height = '0%'; text5.innerText = '0L';
-      water3.style.height = '0%'; text3.innerText = '0L';
+      document.getElementById('water-5').style.height = '0%'; 
+      document.getElementById('text-5').innerText = '0L';
+      document.getElementById('water-3').style.height = '0%'; 
+      document.getElementById('text-3').innerText = '0L';
       
+      moveCounter.innerText = '0';
+      historyList.innerHTML = ''; // Limpa o histórico
+
       document.getElementById('winScreen').style.display = 'none';
       document.getElementById('failScreen').style.display = 'none';
       
       updateTimerUI();
       startTimer();
     }
-
-    // Dá o Play no tempo quando a tela abrir
-    startTimer();
   </script>
 </body>
 </html>
